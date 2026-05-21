@@ -64,35 +64,110 @@
 
         .hidden { display: none !important; }
 
-        /* BOUTONS FILTRES */
-        .filter-bar {
-            display: flex;
-            gap: 10px;
+        /* INTERFACE DU QUIZ */
+        .quiz-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
             margin-bottom: 15px;
-            flex-wrap: wrap;
         }
 
-        .btn-filter {
-            flex: 1;
-            min-width: 60px;
+        .quiz-score {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #64748b;
+            margin-bottom: 10px;
+            direction: ltr;
+        }
+
+        .quiz-question-box {
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .quiz-label {
+            font-size: 1rem;
+            color: #64748b;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .quiz-latin {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            direction: ltr;
+            display: inline-block;
+        }
+
+        .quiz-input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 1.8rem;
+            text-align: center;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .quiz-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .quiz-feedback {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            min-height: 24px;
+        }
+        .feedback-correct { color: #10b981; }
+        .feedback-wrong { color: #ef4444; }
+
+        /* CLAVIER REPERTOIRE NKO POUR FACILITER LA SAISIE */
+        .keyboard-hint-title {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .nko-keyboard {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            background: #f1f5f9;
+            padding: 10px;
+            border-radius: 12px;
+            max-height: 180px;
+            overflow-y: auto;
+        }
+
+        .btn-key {
             background: white;
             border: 1px solid #cbd5e1;
-            padding: 10px;
-            border-radius: 10px;
+            padding: 10px 5px;
+            border-radius: 8px;
+            font-size: 1.4rem;
             font-weight: bold;
-            font-size: 1.1rem;
             cursor: pointer;
-            color: #64748b;
+            color: #1e293b;
             text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        .btn-filter.active {
-            background: var(--glam);
-            color: white;
-            border: none;
+        .btn-key:active {
+            background: #e2e8f0;
         }
 
-        /* GRILLE ALPHABET */
+        /* GRILLE ALPHABET (GRAMMAIRE) */
         .nko-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -141,7 +216,7 @@
             padding: 14px;
             font-size: 1.6rem;
             font-weight: bold;
-            background: #1e293b; /* Fond sombre pour faire ressortir l'arc-en-ciel à la saisie */
+            background: #1e293b; 
             color: #f8fafc;
             box-sizing: border-box;
             overflow-y: auto;
@@ -289,17 +364,28 @@
 <body>
 
 <div class="iphone-xs-screen">
-    <header id="main-title">ߊ߬ߟߎ߬ߝߊ߬ߓߋ</header>
+    <header id="main-title">ߞߏ߲߬ߓߏ (Quiz)</header>
     
     <div class="content">
         
         <div id="view-alphabet">
-            <div class="filter-bar">
-                <button class="btn-filter active" id="btn-all" onclick="filterAlphabet('all')">ߓߍ߯</button>
-                <button class="btn-filter" id="btn-vow" onclick="filterAlphabet('voyelle')">ߛߌ߰ߙߊ߬ߟߊ</button>
-                <button class="btn-filter" id="btn-con" onclick="filterAlphabet('consonne')">ߛߌ߰ߕߊ߬ߟߊ</button>
+            <div class="quiz-card">
+                <div class="quiz-score" id="quiz-score-display">Score: 0 / 27</div>
+                
+                <div class="quiz-question-box">
+                    <span class="quiz-label">Saisissez le caractère N'ko pour :</span>
+                    <div class="quiz-latin" id="quiz-question-latin">-</div>
+                </div>
+
+                <input type="text" id="quiz-user-input" class="quiz-input" placeholder="ߖ" autocomplete="off" oninput="checkQuizAnswer()">
+                
+                <div class="quiz-feedback" id="quiz-feedback-box"></div>
+                
+                <button class="btn-action" onclick="nextQuizQuestion()">ߕߊ߬ߡߌ߲߬ ߦߊ߲߬ (Suivant)</button>
             </div>
-            <div class="nko-grid" id="alphabet-container"></div>
+
+            <div class="keyboard-hint-title">ߓߟߏߟߊ߫ ߕߟߊߜߊߝߋ (Clavier Virtuel) :</div>
+            <div class="nko-keyboard" id="quiz-keyboard-container"></div>
         </div>
 
         <div id="view-grammar" class="hidden">
@@ -318,7 +404,7 @@
             <div class="editor-card">
                 <div id="nko-rainbow-editor" class="editor-rainbow-box" contenteditable="true" placeholder="ߛߓߍߟߌ ߘߊߡߌ߬ߣߊ߬ ߦߊ߲߬..."></div>
                 <div style="margin-top: 12px;">
-                    <button class="btn-action" onclick="saveEditorText()">ߊ߬ ߡߊߙߊ߲߬ (Enregistrer)</button>
+                    <button class="btn-action" onclick="saveEditorText()">ߊ߬ ߡ mߊߙߊ߲߬ (Enregistrer)</button>
                 </div>
             </div>
             <div class="manage-title" style="text-align:center;">ߛߓߍߟߌ߫ ߡߊߙߊ߲ߣߍ߲ ߜߊ߲߬ߠߊ߫</div>
@@ -347,7 +433,7 @@
     </div>
 
     <nav class="taskbar">
-        <button class="task-item active" id="tab-alphabet" onclick="switchView('alphabet')">ߊ߬ߟߎ߬ߝߊ߬ߓߋ</button>
+        <button class="task-item active" id="tab-alphabet" onclick="switchView('alphabet')">ߞߏ߲߬ߓߏ (Quiz)</button>
         <button class="task-item" id="tab-grammar" onclick="switchView('grammar')">ߞߊ߲ߡߊߛߙߋ</button>
         <button class="task-item" id="tab-editor" onclick="switchView('editor')">ߛߓߍߟߊ</button>
         <button class="task-item" id="tab-add" onclick="switchView('add')">ߟߊ߬ߘߊ߲߬</button>
@@ -360,10 +446,10 @@
 </div>
 
 <script>
-    // Palette arc-en-ciel éclatante
     const rainbowColors = ['#ef4444', '#f97316', '#f59e0b', '#10b981', '#06b6d4', '#3b82f6', '#6366f1', '#8b5cf6', '#d946ef', '#ec4899'];
     function getRainbowColor(index) { return rainbowColors[index % rainbowColors.length]; }
 
+    // Liste complète des 27 caractères de base de l'alphabet N'ko (voyelles + consonnes + nasale)
     const nkoAlphabet = [
         { letter: "ߊ", type: "voyelle", latin: "A" }, { letter: "ߋ", type: "voyelle", latin: "É" }, 
         { letter: "ߌ", type: "voyelle", latin: "I" }, { letter: "ߍ", type: "voyelle", latin: "Ɛ" }, 
@@ -377,7 +463,8 @@
         { letter: "ߟ", type: "consonne", latin: "La" }, { letter: "ߡ", type: "consonne", latin: "Ma" }, 
         { letter: "ߢ", type: "consonne", latin: "Nya" }, { letter: "ߣ", type: "consonne", latin: "Na" }, 
         { letter: "ߤ", type: "consonne", latin: "Ha" }, { letter: "ߥ", type: "consonne", latin: "Wa" }, 
-        { letter: "ߦ", type: "consonne", latin: "Ya" }
+        { letter: "ߦ", type: "consonne", latin: "Ya" }, { letter: "ߒ", type: "consonne", latin: "N" },
+        { letter: "ߚ", type: "consonne", latin: "Rra" }
     ];
 
     const accentRules = {
@@ -388,8 +475,15 @@
         '߯': { desc: 'Ton bas long', marker: '̀', long: true }
     };
 
+    // VARIABLES ET MOTEUR DU QUIZ
+    let currentQuestionIndex = 0;
+    let quizScore = 0;
+    let quizPool = [];
+    let hasAnsweredCurrent = false;
+
     window.onload = () => {
-        renderAlphabet('all');
+        initQuiz();
+        buildVirtualKeyboard();
         renderGrammarAlphabet('߫');
         setupRainbowScribe();
         if (!localStorage.getItem('nko_dict')) {
@@ -401,17 +495,81 @@
         renderSavedNotes();
     };
 
-    function renderAlphabet(filter) {
-        const container = document.getElementById('alphabet-container');
+    function initQuiz() {
+        // Mélanger l'alphabet pour créer une partie aléatoire
+        quizPool = [...nkoAlphabet].sort(() => Math.random() - 0.5);
+        quizScore = 0;
+        currentQuestionIndex = 0;
+        displayQuizQuestion();
+    }
+
+    function buildVirtualKeyboard() {
+        const container = document.getElementById('quiz-keyboard-container');
         if (!container) return;
-        const items = filter === 'all' ? nkoAlphabet : nkoAlphabet.filter(i => i.type === filter);
-        
-        container.innerHTML = items.map((item, idx) => `
-            <div class="mini-card">
-                <span class="nko-letter" style="color: ${getRainbowColor(idx)};">${item.letter}</span>
-                <span class="latin-pron">${item.latin}</span>
-            </div>
+        // Tri visuel pour le clavier
+        container.innerHTML = nkoAlphabet.map(item => `
+            <button class="btn-key" onclick="pressKey('${item.letter}')">${item.letter}</button>
         `).join('');
+    }
+
+    function pressKey(char) {
+        if (hasAnsweredCurrent) return;
+        const input = document.getElementById('quiz-user-input');
+        input.value = char;
+        checkQuizAnswer();
+    }
+
+    function displayQuizQuestion() {
+        if (currentQuestionIndex >= 27) {
+            // Fin du quiz, réinitialisation automatique
+            alert(`Fin du quiz ! Votre score final est de : ${quizScore} / 27`);
+            initQuiz();
+            return;
+        }
+
+        hasAnsweredCurrent = false;
+        const currentItem = quizPool[currentQuestionIndex];
+        
+        document.getElementById('quiz-question-latin').innerText = currentItem.latin;
+        document.getElementById('quiz-user-input').value = "";
+        document.getElementById('quiz-user-input').disabled = false;
+        document.getElementById('quiz-feedback-box').innerText = "";
+        document.getElementById('quiz-feedback-box').className = "quiz-feedback";
+        document.getElementById('quiz-score-display').innerText = `Score: ${quizScore} / 27`;
+    }
+
+    function checkQuizAnswer() {
+        if (hasAnsweredCurrent) return;
+
+        const inputField = document.getElementById('quiz-user-input');
+        const feedbackBox = document.getElementById('quiz-feedback-box');
+        const userAnswer = inputField.value.trim();
+        const correctAnswer = quizPool[currentQuestionIndex].letter;
+
+        if (userAnswer === "") return;
+
+        hasAnsweredCurrent = true;
+        inputField.disabled = true;
+
+        if (userAnswer === correctAnswer) {
+            quizScore++;
+            feedbackBox.innerText = "ߓߍ߲߬ߣߍ߲߫ ߦߋ߫ ! (Correct +1)";
+            feedbackBox.className = "quiz-feedback feedback-correct";
+        } else {
+            feedbackBox.innerText = `ߝߎ߬ߕߎ߲߬ߣߍ߲߫ ! Réponse: ${correctAnswer}`;
+            feedbackBox.className = "quiz-feedback feedback-wrong";
+        }
+        
+        document.getElementById('quiz-score-display').innerText = `Score: ${quizScore} / 27`;
+    }
+
+    function nextQuizQuestion() {
+        if (!hasAnsweredCurrent) {
+            alert("Veuillez donner une réponse ou choisir une lettre avant de continuer.");
+            return;
+        }
+        currentQuestionIndex++;
+        displayQuizQuestion();
     }
 
     function renderGrammarAlphabet(accent) {
@@ -419,7 +577,7 @@
         if (!container) return;
         const rule = accentRules[accent];
 
-        container.innerHTML = nkoAlphabet.map((item, idx) => {
+        container.innerHTML = nkoAlphabet.slice(0, 25).map((item, idx) => {
             let latinModifie = item.latin;
             let premiereVoyelle = (item.type === 'voyelle') ? item.latin[0].toLowerCase() : "a";
             let voyelleAccentuee = premiereVoyelle + rule.marker;
@@ -460,7 +618,6 @@
 
             editor.innerHTML = coloredHTML;
 
-            // Restauration précise du curseur
             let target = editor;
             let charCount = 0;
             let nodeStack = [target];
@@ -486,8 +643,9 @@
         });
     }
 
-    /* GESTION COMPLÈTE DES FICHIERS SAUVEGARDÉS */
     function getSavedNotes() { return JSON.parse(localStorage.getItem('nko_notes')) || []; }
+
+    document.editor_saved_function_toggle = false;
 
     function saveEditorText() {
         const editor = document.getElementById('nko-rainbow-editor');
@@ -552,14 +710,6 @@
         renderGrammarAlphabet(accent);
     }
 
-    function filterAlphabet(type) {
-        document.querySelectorAll('#view-alphabet .btn-filter').forEach(b => b.classList.remove('active'));
-        if(type === 'all') document.getElementById('btn-all').classList.add('active');
-        if(type === 'voyelle') document.getElementById('btn-vow').classList.add('active');
-        if(type === 'consonne') document.getElementById('btn-con').classList.add('active');
-        renderAlphabet(type);
-    }
-
     function switchView(viewName) {
         document.getElementById('view-alphabet').classList.toggle('hidden', viewName !== 'alphabet');
         document.getElementById('view-grammar').classList.toggle('hidden', viewName !== 'grammar');
@@ -571,7 +721,7 @@
         const currentTab = document.getElementById('tab-' + viewName);
         if(currentTab) currentTab.classList.add('active');
 
-        const headers = { alphabet: "ߊ߬ߟߎ߬ߝߊ߬ߓߋ", grammar: "ߞߊ߲ߡߊߛߙߋ", editor: "ߛߓߍߟߊ", add: "ߡߟߊߡߊߦߟߍ", dico: "ߘߎ߲ߓߎ" };
+        const headers = { alphabet: "ߞߏ߲߬ߓߏ (Quiz)", grammar: "ߞߊ߲ߡߊߛߙߋ", editor: "ߛߓߍߟߊ", add: "ߡߟߊߡߊߦߟߍ", dico: "ߘߎ߲ߓߎ" };
         document.getElementById('main-title').innerText = headers[viewName];
 
         if(viewName === 'dico') renderDico();
