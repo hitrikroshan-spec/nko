@@ -10,6 +10,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+NKo:wght@400;700&display=swap" rel="stylesheet">
+
     <style>
         :root { 
             --primary: #10b981; 
@@ -119,6 +123,7 @@
         }
 
         .nko-letter { 
+            font-family: 'Noto Sans NKo', sans-serif;
             font-size: 4rem; 
             font-weight: bold; 
             display: block;
@@ -145,6 +150,7 @@
         }
         
         .quiz-question {
+            font-family: 'Noto Sans NKo', sans-serif;
             font-size: 5rem;
             font-weight: bold;
             color: #10b981;
@@ -181,84 +187,94 @@
             font-size: 0.95rem;
         }
 
-        /* ZONE SÉCURISÉE DE L'ÉDITEUR AVEC SELECTION COULEURS */
-        .editor-card {
-            background: white;
-            border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            border: 1px solid #e2e8f0;
+        /* DESIGN ÉDITEUR STYLE MS WORD AVEC COULEUR */
+        .word-editor-container {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Barre de sélection de couleur dans l'éditeur */
-        .color-toolbar {
+        .word-toolbar {
+            background: #ffffff;
+            border-bottom: 1px solid #cbd5e1;
+            padding: 8px;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            direction: ltr;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .btn-word-tool {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: #334155;
             display: flex;
             align-items: center;
-            gap: 6px;
-            margin-bottom: 10px;
+            justify-content: center;
+            min-width: 32px;
+            height: 32px;
+            box-sizing: border-box;
+        }
+
+        .btn-word-tool:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        /* Sélecteur de couleur Word spécial */
+        .word-color-picker-wrapper {
+            display: flex;
+            align-items: center;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
             background: #f8fafc;
-            padding: 8px;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-            overflow-x: auto;
+            height: 32px;
+            padding: 0 4px;
+            cursor: pointer;
+            gap: 4px;
         }
-
-        .btn-rainbow-toggle {
-            background: linear-gradient(45deg, #ef4444, #f59e0b, #10b981, #3b82f6);
-            color: white;
+        
+        .word-color-picker-wrapper input[type="color"] {
             border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: bold;
+            width: 22px;
+            height: 22px;
             cursor: pointer;
-            white-space: nowrap;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: none;
+            padding: 0;
         }
 
-        .btn-rainbow-toggle.active {
-            outline: 2px solid #0f172a;
-            transform: scale(0.95);
-        }
-
-        .color-dot {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            cursor: pointer;
-            flex-shrink: 0;
-            transition: transform 0.1s ease;
-        }
-
-        .color-dot:hover {
-            transform: scale(1.1);
-        }
-
-        .color-dot.active {
-            border-color: #0f172a;
-            transform: scale(1.15);
-        }
-
+        /* Zone d'écriture type "Feuille Word" */
         .editor-rainbow-box {
             width: 100%;
-            height: 150px;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            padding: 14px;
-            font-size: 2.2rem;
-            font-weight: bold;
-            background: #ffffff; 
+            height: 200px;
+            border: none;
+            padding: 16px;
+            font-size: 1.8rem;
+            font-weight: normal;
+            background: #ffffff;
+            color: #0f172a;
             box-sizing: border-box;
             overflow-y: auto;
             white-space: pre-wrap;
             word-wrap: break-word;
             direction: rtl;
+            font-family: 'Noto Sans NKo', sans-serif;
+            line-height: 1.5;
         }
 
         .editor-rainbow-box:focus {
             outline: none;
-            border-color: var(--primary);
         }
 
         /* BLOCS DE SAUVEGARDE STYLE FICHIER */
@@ -275,7 +291,7 @@
         }
 
         .note-date { font-size: 0.75rem; color: #64748b; font-weight: bold; direction: ltr; text-align: left; }
-        .note-text { font-size: 1.6rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .note-text { font-family: 'Noto Sans NKo', sans-serif; font-size: 1.4rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .note-actions { display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #f1f5f9; padding-top: 8px; }
         
         .btn-note-opt { border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: bold; cursor: pointer; }
@@ -340,7 +356,7 @@
 
         .word-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .word-col { flex: 1; text-align: center; }
-        .word-nko { font-size: 2rem; color: var(--primary); font-weight: bold; }
+        .word-nko { font-family: 'Noto Sans NKo', sans-serif; font-size: 2rem; color: var(--primary); font-weight: bold; }
         .word-sens { font-size: 1.6rem; color: #0f172a; font-weight: bold; }
 
         .word-img-container { width: 100%; display: flex; justify-content: center; align-items: center; margin-top: 5px; }
@@ -435,23 +451,28 @@
         </div>
 
         <div id="view-editor" class="hidden">
-            <div class="editor-card">
-                <div class="color-toolbar">
-                    <button class="btn-rainbow-toggle active" id="rainbow-btn" onclick="setRainbowMode()">🎨 ߞߐ߬ߟߐ</button>
-                    <div class="color-dot" style="background-color: #ef4444;" onclick="setSolidColor('#ef4444', this)"></div>
-                    <div class="color-dot" style="background-color: #f97316;" onclick="setSolidColor('#f97316', this)"></div>
-                    <div class="color-dot" style="background-color: #10b981;" onclick="setSolidColor('#10b981', this)"></div>
-                    <div class="color-dot" style="background-color: #3b82f6;" onclick="setSolidColor('#3b82f6', this)"></div>
-                    <div class="color-dot" style="background-color: #8b5cf6;" onclick="setSolidColor('#8b5cf6', this)"></div>
-                    <div class="color-dot" style="background-color: #1e293b;" onclick="setSolidColor('#1e293b', this)"></div>
+            <div class="word-editor-container">
+                <div class="word-toolbar">
+                    <button class="btn-word-tool" onclick="formatDoc('bold')" title="Gras"><b>B</b></button>
+                    <button class="btn-word-tool" onclick="formatDoc('italic')" title="Italique"><i>I</i></button>
+                    <button class="btn-word-tool" onclick="formatDoc('underline')" title="Souligné"><u>U</u></button>
+                    <button class="btn-word-tool" onclick="formatDoc('justifyRight')" title="Aligner à droite">➔</button>
+                    <button class="btn-word-tool" onclick="formatDoc('justifyCenter')" title="Centrer">↔</button>
+                    <button class="btn-word-tool" onclick="formatDoc('justifyLeft')" title="Aligner à gauche">ߕ</button>
+                    
+                    <div class="word-color-picker-wrapper" title="Couleur du texte">
+                        <span>🎨</span>
+                        <input type="color" id="editor-font-color" oninput="changeTextColor(this.value)" value="#0f172a">
+                    </div>
+
+                    <button class="btn-word-tool" onclick="formatDoc('removeFormat')" title="Effacer mise en forme" style="color:red; margin-left: auto;">✕</button>
                 </div>
-                
                 <div id="nko-rainbow-editor" class="editor-rainbow-box" contenteditable="true" placeholder="ߛߓߍߟߌ ߘߊߡߌ߬ߣߊ߬ ߦߊ߲߬..."></div>
-                <div style="margin-top: 12px;">
-                    <button class="btn-action" onclick="saveEditorText()">ߊ߬ ߡߊߙߊ߲߬ (Enregistrer)</button>
-                </div>
             </div>
-            <div class="manage-title" style="text-align:center;">ߛߓߍߟߌ߫ ߡߊߙߊ߲ߍ߲ ߜߊ߲߬ߠߊ߫</div>
+            <div style="margin-top: 12px;">
+                <button class="btn-action" onclick="saveEditorText()">ߊ߬ ߡߊߙߊ߲߬ (Enregistrer)</button>
+            </div>
+            <div class="manage-title" style="text-align:center;">ߛߓߍߟߌ߫ ߡߊߙߊ߲ߍ ߜߊ߲߬ߠߊ߫</div>
             <div id="saved-notes-container"></div>
         </div>
 
@@ -521,14 +542,9 @@
     let quizScore = 0;
     let currentQuizLetter = null;
 
-    // États de l'éditeur de couleur
-    let editorColorMode = 'rainbow'; // 'rainbow' ou une couleur hexadécimale fixe
-    let selectedColor = '#ef4444';
-
     window.onload = () => {
         renderAlphabet('all');
         renderGrammarAlphabet('߫');
-        setupRainbowScribe();
         if (!localStorage.getItem('nko_dict')) {
             localStorage.setItem('nko_dict', JSON.stringify([
                 { nko: "ߓߊ", sens: "Mère", img: "" },
@@ -652,81 +668,16 @@
         }).join('');
     }
 
-    /* GESTION DE LA BARRE D'OUTILS COULEURS */
-    function setRainbowMode() {
-        editorColorMode = 'rainbow';
-        document.getElementById('rainbow-btn').classList.add('active');
-        document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
-        triggerColorRefresh();
+    /* FONCTIONS DE FORMATAGE STYLE MS WORD */
+    function formatDoc(command) {
+        document.execCommand(command, false, null);
+        document.getElementById('nko-rainbow-editor').focus();
     }
 
-    function setSolidColor(color, element) {
-        editorColorMode = 'solid';
-        selectedColor = color;
-        document.getElementById('rainbow-btn').classList.remove('active');
-        document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
-        element.classList.add('active');
-        triggerColorRefresh();
-    }
-
-    function triggerColorRefresh() {
-        const editor = document.getElementById('nko-rainbow-editor');
-        if(editor) editor.dispatchEvent(new Event('input'));
-    }
-
-    /* MOTEUR D'ÉCRITURE MULTICOLORE ET UNIE COUPLÉ AUX BOUTONS */
-    function setupRainbowScribe() {
-        const editor = document.getElementById('nko-rainbow-editor');
-        if(!editor) return;
-
-        editor.addEventListener('input', () => {
-            let selection = window.getSelection();
-            if(!selection.rangeCount) return;
-            let range = selection.getRangeAt(0);
-            
-            let preCaretRange = range.cloneRange();
-            preCaretRange.selectNodeContents(editor);
-            preCaretRange.setEnd(range.endContainer, range.endOffset);
-            let caretOffset = preCaretRange.toString().length;
-
-            let plainText = editor.innerText;
-            let coloredHTML = "";
-
-            for (let i = 0; i < plainText.length; i++) {
-                if (plainText[i] === "\n") { 
-                    coloredHTML += "<br>"; 
-                } else { 
-                    // Sélection de la couleur selon le mode actif (Arc-en-ciel ou Uni)
-                    let currentColor = (editorColorMode === 'rainbow') ? getRainbowColor(i) : selectedColor;
-                    coloredHTML += `<span style="color:${currentColor};">${plainText[i]}</span>`; 
-                }
-            }
-
-            editor.innerHTML = coloredHTML;
-
-            let target = editor;
-            let charCount = 0;
-            let nodeStack = [target];
-            let node, foundStart = false;
-
-            while ((node = nodeStack.pop())) {
-                if (node.nodeType === 3) {
-                    let nextCharCount = charCount + node.length;
-                    if (!foundStart && caretOffset >= charCount && caretOffset <= nextCharCount) {
-                        let newRange = document.createRange();
-                        newRange.setStart(node, caretOffset - charCount);
-                        newRange.setEnd(node, caretOffset - charCount);
-                        selection.removeAllRanges();
-                        selection.addRange(newRange);
-                        break;
-                    }
-                    charCount = nextCharCount;
-                } else {
-                    let i = node.childNodes.length;
-                    while (i--) { nodeStack.push(node.childNodes[i]); }
-                }
-            }
-        });
+    /* NOUVEAU : Changement dynamique de la couleur du texte sélectionné */
+    function changeTextColor(colorHex) {
+        document.execCommand('foreColor', false, colorHex);
+        document.getElementById('nko-rainbow-editor').focus();
     }
 
     function getSavedNotes() { return JSON.parse(localStorage.getItem('nko_notes')) || []; }
@@ -765,7 +716,7 @@
                 <div class="note-date">${note.date}</div>
                 <div class="note-text" style="direction: rtl;">${note.html}</div>
                 <div class="note-actions">
-                    <button class="btn-note-opt btn-load" onclick="restoreNote(${index})">ߟߊߞߎߣߎ߲߫</button>
+                    <button class="btn-note-opt btn-load" onclick="restoreNote(${index})">ߟߊߞߎߣߎ߲</button>
                     <button class="btn-note-opt btn-trash" onclick="deleteNote(${index})">ߟߊ߬ߓߋ߬</button>
                 </div>
             </div>
