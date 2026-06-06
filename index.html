@@ -492,6 +492,10 @@
         </div>
 
         <div id="view-dico" class="hidden">
+            <div class="filter-bar">
+                <button class="btn-filter active" id="btn-dico-words" onclick="toggleDicoTab('dict')">ߘߎ߲ߓߎ</button>
+                <button class="btn-filter" id="btn-dico-notes" onclick="toggleDicoTab('zana')">ߛߊ߲ߊ</button>
+            </div>
             <div class="dico-container"></div>
         </div>
         
@@ -541,6 +545,7 @@
     let isQuizMode = false;
     let quizScore = 0;
     let currentQuizLetter = null;
+    let currentDicoView = 'dict'; // Suivi du mode actif dans le dictionnaire
 
     window.onload = () => {
         renderAlphabet('all');
@@ -759,12 +764,28 @@
         const headers = { alphabet: "ߊ߬ߟߎ߬ߝߊ߬ߓߋ", grammar: "ߞߊ߲ߡߊߛߙߋ", editor: "ߛߓߍߟߊ", add: "ߡߟߊߡߊߦߟߍ", dico: "ߘߎ߲ߓߎ" };
         document.getElementById('main-title').innerText = headers[viewName];
 
-        if(viewName === 'dico') renderDico();
+        if(viewName === 'dico') {
+            // Par défaut on ouvre l'affichage classique des mots du dictionnaire
+            toggleDicoTab(currentDicoView);
+        }
         if(viewName === 'add') renderAdminDelete();
         if(viewName === 'editor') renderSavedNotes();
     }
 
     function getDico() { return JSON.parse(localStorage.getItem('nko_dict')) || []; }
+
+    // Nouvelle fonction pour basculer entre le Dico (mots) et Zana (écrits de l'éditeur)
+    function toggleDicoTab(tabType) {
+        currentDicoView = tabType;
+        document.getElementById('btn-dico-words').classList.toggle('active', tabType === 'dict');
+        document.getElementById('btn-dico-notes').classList.toggle('active', tabType === 'zana');
+        
+        if(tabType === 'dict') {
+            renderDico();
+        } else {
+            renderDicoNotes();
+        }
+    }
 
     function saveWord() {
         const nkoInput = document.getElementById('w-nko');
@@ -800,13 +821,40 @@
 
     function renderDico() {
         const container = document.querySelector('.dico-container'); if (!container) return;
-        container.innerHTML = getDico().map(item => `
+        const dicoData = getDico();
+        
+        if (dicoData.length === 0) {
+            container.innerHTML = `<div style="text-align:center; color:#64748b; font-size:0.9rem; margin-top:15px;">Aucun mot trouvé</div>`;
+            return;
+        }
+
+        container.innerHTML = dicoData.map(item => `
             <div class="word-item">
                 <div class="word-row">
                     <div class="word-col"><span class="word-nko">${item.nko}</span></div>
                     <div class="word-col" style="border-right: 2px solid #f1f5f9;"><span class="word-sens">${item.sens}</span></div>
                 </div>
                 ${item.img ? `<div class="word-img-container"><img src="${item.img}" class="word-thumb" alt="image" /></div>` : ''}
+            </div>
+        `).join('');
+    }
+
+    // Nouvelle fonction pour afficher les notes de l'éditeur au format dictionnaire
+    function renderDicoNotes() {
+        const container = document.querySelector('.dico-container'); if (!container) return;
+        const notes = getSavedNotes();
+
+        if (notes.length === 0) {
+            container.innerHTML = `<div style="text-align:center; color:#64748b; font-size:0.9rem; margin-top:15px;">Aucun écrit trouvé (ߛߊ߲ߊ)</div>`;
+            return;
+        }
+
+        container.innerHTML = notes.map(note => `
+            <div class="word-item">
+                <div class="note-date">${note.date}</div>
+                <div style="direction: rtl; font-family: 'Noto Sans NKo', sans-serif; font-size: 1.4rem; padding: 5px 0;">
+                    ${note.html}
+                </div>
             </div>
         `).join('');
     }
