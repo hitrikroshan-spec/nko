@@ -700,6 +700,9 @@
         { name: "md dossier", desc: "Créer un nouveau répertoire.", syntaxe: "Création" },
         { name: "rd dossier", desc: "Supprimer un répertoire.", syntaxe: "Suppression" },
         { name: "del fichier", desc: "Supprimer un fichier.", syntaxe: "Suppression" },
+        { name: "ren old new", desc: "Renommer un fichier ou dossier.", syntaxe: "Renommer" },
+        { name: "copy src dest", desc: "Copier un fichier ou dossier.", syntaxe: "Copie" },
+        { name: "move src dest", desc: "Déplacer/Couper un fichier ou dossier.", syntaxe: "Déplacement" },
         { name: "type nul > f.txt", desc: "Créer un fichier texte .txt vide.", syntaxe: "Fichier TXT" },
         { name: "dir", desc: "Lister les éléments du dossier actuel.", syntaxe: "Affichage" },
         { name: "cls", desc: "Effacer l'intégralité du terminal.", syntaxe: "Nettoyage" },
@@ -943,15 +946,41 @@
         } else if(val === 'cls') {
             logs.innerHTML = 'Microsoft Windows [Version 10.0.19045]<br>(c) Microsoft Corporation. Tous droits réservés.';
         } else if(val === 'help') {
-            logs.innerHTML += `<br>Commandes dispo : help, dir, cls, md, rd, cd, cd.., type nul > fichier.txt, del, start ., exit`;
+            logs.innerHTML += `<br>Commandes : dir, cls, md, rd, cd, cd.., type nul > f.txt, del, ren, copy, move, exit`;
+        } else if(val.startsWith('ren ')) {
+            let parts = rawVal.split(' ');
+            if(parts.length === 3 && currentNode && currentNode.content) {
+                let oldName = parts[1], newName = parts[2];
+                if(currentNode.content[oldName]) {
+                    currentNode.content[newName] = currentNode.content[oldName];
+                    delete currentNode.content[oldName];
+                    logs.innerHTML += `<br>Renommé : "${oldName}" en "${newName}".`;
+                } else { logs.innerHTML += `<br>Erreur : introuvable.`; }
+            }
+        } else if(val.startsWith('copy ')) {
+            let parts = rawVal.split(' ');
+            if(parts.length === 3 && currentNode && currentNode.content) {
+                let src = parts[1], dest = parts[2];
+                if(currentNode.content[src]) {
+                    currentNode.content[dest] = JSON.parse(JSON.stringify(currentNode.content[src]));
+                    logs.innerHTML += `<br>Copié vers "${dest}".`;
+                } else { logs.innerHTML += `<br>Erreur : introuvable.`; }
+            }
+        } else if(val.startsWith('move ')) {
+            let parts = rawVal.split(' ');
+            if(parts.length === 3 && currentNode && currentNode.content) {
+                let src = parts[1], dest = parts[2];
+                if(currentNode.content[src]) {
+                    currentNode.content[dest] = currentNode.content[src];
+                    delete currentNode.content[src];
+                    logs.innerHTML += `<br>Déplacé vers "${dest}".`;
+                } else { logs.innerHTML += `<br>Erreur : introuvable.`; }
+            }
         } else if(val === 'cd..') {
-            if(currentPath === "C:") {
-                logs.innerHTML += `<br>Déjà à la racine du disque C:.`;
-            } else {
+            if(currentPath !== "C:") {
                 let parts = currentPath.split('\\');
                 parts.pop();
                 currentPath = parts.join('\\');
-                if(currentPath === "C:") currentPath = "C:"; 
             }
         } else if(val.startsWith('cd ')) {
             let targetDir = rawVal.substring(3).trim();
