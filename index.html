@@ -1,62 +1,61 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="nqo">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Bases du Langage C & OS — CodeBlocks Local Edition</title>
+    <title>ߒߞߏ — ߔߙߏ</title>
     
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2563eb">
+    <meta name="theme-color" content="#10b981">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+NKo:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
         :root { 
-            --primary: #2563eb; 
-            --glam: linear-gradient(135deg, #1e40af 0%, #0f172a 100%); 
+            --primary: #10b981; 
+            --glam: linear-gradient(135deg, #10b981 0%, #059669 100%); 
             --bg: #f8fafc; 
             --text: #1e293b; 
-            --code-bg: #090d16;
         }
         
         body { 
             margin: 0; 
             font-family: 'Inter', sans-serif; 
-            background: #cbd5e1; 
+            background: #e2e8f0; 
             min-height: 100vh; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
             color: var(--text); 
             overscroll-behavior: none; 
+            direction: rtl; 
         }
 
         .iphone-xs-screen { 
             width: 100%; 
-            max-width: 420px; 
+            max-width: 400px; 
             height: 100vh; 
             background: var(--bg); 
             display: flex; 
             flex-direction: column; 
             overflow: hidden; 
             position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.25); 
+            box-shadow: 0 0 20px rgba(0,0,0,0.1); 
         }
         
         header { 
             background: var(--glam); 
             color: white; 
-            padding: 45px 15px 15px; 
+            padding: 50px 15px 15px; 
             text-align: center; 
-            font-weight: 700; 
-            font-size: 1.25rem; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            font-weight: bold; 
+            font-size: 1.5rem; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             z-index: 10;
-            letter-spacing: 0.5px;
         }
 
         .content { 
@@ -65,49 +64,50 @@
             padding: 15px; 
             padding-bottom: 110px; 
             z-index: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .content.editor-active-mode {
-            padding: 8px 8px 110px 8px !important;
         }
 
         .hidden { display: none !important; }
 
-        /* FILTER BAR */
+        /* BOUTONS FILTRES */
         .filter-bar {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             margin-bottom: 15px;
             flex-wrap: wrap;
         }
 
         .btn-filter {
             flex: 1;
-            min-width: 65px;
+            min-width: 60px;
             background: white;
             border: 1px solid #cbd5e1;
-            padding: 10px 6px;
+            padding: 10px;
             border-radius: 10px;
             font-weight: bold;
-            font-size: 0.78rem;
+            font-size: 1.1rem;
             cursor: pointer;
             color: #64748b;
             text-align: center;
         }
 
         .btn-filter.active {
-            background: var(--primary);
+            background: var(--glam);
             color: white;
             border: none;
         }
 
-        .btn-quiz-toggle { background: #f59e0b; color: white; border: none; }
-        .btn-quiz-toggle.active { background: #d97706; }
+        .btn-quiz-toggle {
+            background: #f59e0b;
+            color: white;
+            border: none;
+        }
+        .btn-quiz-toggle.active {
+            background: #d97706;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
 
-        /* GRIDS SYSTEM */
-        .alphabet-grid {
+        /* GRILLE ALPHABET */
+        .nko-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
@@ -117,510 +117,384 @@
             background: white; 
             border-radius: 14px; 
             border: 1px solid #e2e8f0; 
-            text-align: left; 
-            padding: 12px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .mini-card:active {
-            transform: scale(0.97);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            text-align: center; 
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        .letter-main { 
-            font-family: 'Fira Code', monospace;
-            font-size: 1.05rem; 
+        .nko-letter { 
+            font-family: 'Noto Sans NKo', sans-serif;
+            font-size: 4rem; 
             font-weight: bold; 
             display: block;
-            color: #0f172a;
-            word-break: break-all;
+            line-height: 1.1;
         }
 
-        .letter-pron {
-            font-size: 0.8rem;
+        .latin-pron {
+            font-size: 1.1rem;
             color: #64748b;
+            font-weight: 500;
             display: block;
             margin-top: 5px;
-            line-height: 1.3;
+            direction: ltr; 
         }
 
-        .cmd-syntax-tag {
-            display: inline-block;
-            background: #f1f5f9;
-            color: #0284c7;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.72rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-top: 6px;
-            font-weight: bold;
-            border: 1px solid #e2e8f0;
-        }
-
-        /* CODE BLOCK STYLE */
-        .code-block {
-            background: var(--code-bg);
-            color: #38bdf8;
-            font-family: 'Fira Code', monospace;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 0.82rem;
-            overflow-x: auto;
-            white-space: pre;
-            margin: 8px 0;
-            border-left: 4px solid #3b82f6;
-        }
-
-        .form-card-row {
+        /* ZONE STRUCTURE QUIZ */
+        .quiz-card {
             background: white;
-            border-radius: 14px;
+            border-radius: 16px;
+            padding: 20px;
             border: 1px solid #e2e8f0;
-            padding: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            margin-bottom: 10px;
-        }
-
-        /* IDE ACTIONS BAR */
-        .cb-action-bar {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-            margin-bottom: 10px;
-        }
-        .btn-cb {
-            padding: 11px 4px;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            border: 1px solid #cbd5e1;
-            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
             text-align: center;
-            background: white;
-            color: #475569;
-        }
-        .btn-cb.active { background: #2563eb; color: white; border: none; }
-        .btn-cb-build { background: #22c55e; color: white; border: none; }
-
-        .word-editor-container { 
-            background: var(--code-bg); 
-            border: 1px solid #1e293b; 
-            border-radius: 12px; 
-            overflow: hidden; 
-            display: flex; 
-            flex-direction: column;
-            flex: 1;
-            min-height: 180px;
         }
         
-        .ide-body {
-            position: relative;
-            display: flex;
-            flex: 1;
-            background: var(--code-bg);
-            font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
-            line-height: 1.5;
-            overflow: hidden;
-        }
-        
-        .line-numbers-wrapper {
-            width: 35px;
-            background: #0f172a;
-            color: #475569;
-            user-select: none;
-            overflow: hidden;
-            position: relative;
-            border-right: 1px solid #1e293b;
-        }
-        .line-numbers-content {
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            padding: 12px 0;
-            text-align: right;
-            padding-right: 8px;
-            box-sizing: border-box;
-        }
-        .line-numbers-content span {
-            display: block;
-            height: 1.5em;
-        }
-        
-        .editor-wrapper {
-            position: relative;
-            flex: 1;
-            height: 100%;
-        }
-        .editor-backdrop, .editor-textarea {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            margin: 0; padding: 12px;
-            box-sizing: border-box;
-            border: none; outline: none;
-            background: transparent;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
-            line-height: 1.5;
-            white-space: pre;
-        }
-        .editor-textarea {
-            color: transparent;
-            caret-color: #f8fafc;
-            resize: none;
-            z-index: 2;
-            overflow: auto;
-        }
-        .editor-backdrop {
-            color: #f8fafc;
-            z-index: 1;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        /* TEXT COLORATION */
-        .token-directive { color: #ae81ff; }
-        .token-string { color: #e6db74; }
-        .token-comment { color: #75715e; }
-        .token-type { color: #66d9ef; }
-        .token-keyword { color: #f92672; }
-        .token-func { color: #a6e22e; }
-
-        /* CONSOLE OUTPUT DESIGN */
-        .console-container {
-            background: #000000;
-            border: 2px solid #475569;
-            border-radius: 10px;
-            margin-top: 10px;
-            font-family: 'Fira Code', monospace;
-            overflow: hidden;
-        }
-        .console-header {
-            background: #1e293b;
-            color: #94a3b8;
-            padding: 6px 12px;
-            font-size: 0.72rem;
+        .quiz-question {
+            font-family: 'Noto Sans NKo', sans-serif;
+            font-size: 5rem;
             font-weight: bold;
+            color: #10b981;
+            margin: 10px 0;
+            line-height: 1;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-option {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: #1e293b;
+            transition: all 0.2s ease;
+            direction: ltr;
+        }
+
+        .quiz-score-bar {
             display: flex;
             justify-content: space-between;
-            border-bottom: 1px solid #334155;
-        }
-        .terminal-box {
-            width: 100%;
-            height: 180px;
-            padding: 10px;
-            box-sizing: border-box;
-            background: #000;
-            color: #ffffff;
-            font-size: 0.82rem;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            line-height: 1.4;
+            font-weight: bold;
+            color: #64748b;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
         }
 
-        /* SIMULATEUR CMD */
-        .cmd-simulation-wrapper {
-            background: #000000;
-            border: 2px solid #334155;
+        /* DESIGN ÉDITEUR STYLE MS WORD AVEC COULEUR */
+        .word-editor-container {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
             border-radius: 12px;
-            padding: 12px;
-            font-family: 'Fira Code', monospace;
-            color: #22c55e;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .word-toolbar {
+            background: #ffffff;
+            border-bottom: 1px solid #cbd5e1;
+            padding: 8px;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            direction: ltr;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .btn-word-tool {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 32px;
+            height: 32px;
+            box-sizing: border-box;
+        }
+
+        .btn-word-tool:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        /* Sélecteur de couleur Word spécial */
+        .word-color-picker-wrapper {
+            display: flex;
+            align-items: center;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background: #f8fafc;
+            height: 32px;
+            padding: 0 4px;
+            cursor: pointer;
+            gap: 4px;
+        }
+        
+        .word-color-picker-wrapper input[type="color"] {
+            border: none;
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            background: none;
+            padding: 0;
+        }
+
+        /* Zone d'écriture type "Feuille Word" */
+        .editor-rainbow-box {
+            width: 100%;
+            height: 200px;
+            border: none;
+            padding: 16px;
+            font-size: 1.8rem;
+            font-weight: normal;
+            background: #ffffff;
+            color: #0f172a;
+            box-sizing: border-box;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            direction: rtl;
+            font-family: 'Noto Sans NKo', sans-serif;
+            line-height: 1.5;
+        }
+
+        .editor-rainbow-box:focus {
+            outline: none;
+        }
+
+        /* BLOCS DE SAUVEGARDE STYLE FICHIER */
+        .note-paper {
+            background: white;
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            border-right: 5px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .note-date { font-size: 0.75rem; color: #64748b; font-weight: bold; direction: ltr; text-align: left; }
+        .note-text { font-family: 'Noto Sans NKo', sans-serif; font-size: 1.4rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .note-actions { display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #f1f5f9; padding-top: 8px; }
+        
+        .btn-note-opt { border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: bold; cursor: pointer; }
+        .btn-load { background: #d1fae5; color: #065f46; }
+        .btn-trash { background: #fee2e2; color: #b91c1c; }
+
+        /* FORMULAIRE AJOUT */
+        .form-card {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            margin-bottom: 20px;
+        }
+
+        .form-card h3 { margin-top: 0; margin-bottom: 15px; color: #0f172a; font-size: 1.3rem; }
+        label { font-size: 0.9rem; font-weight: bold; color: #64748b; display: block; margin-bottom: 6px; }
+
+        .textbox {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 18px;
+            box-sizing: border-box;
+            background: #f8fafc;
+            font-family: inherit;
+        }
+
+        .btn-action {
+            background: var(--glam);
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .manage-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #1e293b;
+            margin: 20px 0 10px 5px;
+        }
+
+        /* DICTIONNAIRE */
+        .word-item {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
             margin-bottom: 10px;
             display: flex;
             flex-direction: column;
             gap: 10px;
-            flex: 1;
-        }
-        .cmd-sim-terminal {
-            height: 250px; 
-            overflow-y: auto;
-            font-size: 0.8rem;
-            color: #ffffff;
-            white-space: pre-wrap;
-            border-bottom: 1px solid #1e293b;
-            padding-bottom: 8px;
-        }
-        .cmd-sim-input-row {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: #38bdf8;
-            font-size: 0.85rem;
-        }
-        .cmd-sim-input-row input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #ffffff;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
-        }
-        .cmd-shortcut-trigger-bar {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin-top: 5px;
-        }
-        .btn-shortcut-sim {
-            background: #1e293b;
-            color: #f1f5f9;
-            border: 1px solid #334155;
-            padding: 8px;
-            border-radius: 6px;
-            font-size: 0.72rem;
-            cursor: pointer;
-            font-weight: 500;
-            text-align: center;
-        }
-        .btn-shortcut-sim:active { background: #334155; }
-
-        /* FICTIVE WINDOWS (GUI EXPLORER) */
-        .virtual-window-gui {
-            background: #ffffff;
-            border: 2px solid #2563eb;
-            border-radius: 12px;
-            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
-            margin-bottom: 15px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.2s ease;
-        }
-        .virtual-window-gui.minimized {
-            height: 36px !important;
-            min-height: 36px !important;
-        }
-        .virtual-window-gui.maximized {
-            position: absolute;
-            top: 110px; left: 10px; right: 10px; bottom: 90px;
-            z-index: 100;
-            margin: 0;
-        }
-        .win-gui-header {
-            background: #2563eb;
-            color: white;
-            padding: 8px 12px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .win-gui-controls {
-            display: flex;
-            gap: 5px;
-        }
-        .win-gui-btn {
-            color: white;
-            border: none;
-            border-radius: 4px;
-            width: 20px;
-            height: 20px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            font-weight: bold;
-            line-height: 20px;
-            text-align: center;
-            padding: 0;
-        }
-        .win-gui-close { background: #ef4444; }
-        .win-gui-min { background: #eab308; }
-        .win-gui-max { background: #22c55e; }
-        
-        .win-gui-body {
-            padding: 12px;
-            background: #f8fafc;
-            min-height: 100px;
-            font-size: 0.8rem;
-            color: #334155;
-            flex: 1;
-            overflow-y: auto;
-        }
-        .win-gui-explorer-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 0;
-            border-bottom: 1px solid #e2e8f0;
         }
 
-        /* SAVES PANELS */
-        .note-paper { background: white; border-radius: 12px; padding: 12px; margin-bottom: 10px; border-left: 5px solid var(--primary); }
-        .btn-note-opt { border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.78rem; font-weight: bold; cursor: pointer; }
-        .btn-load { background: #dbeafe; color: #1d4ed8; }
-        .btn-trash { background: #fee2e2; color: #b91c1c; }
+        .word-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .word-col { flex: 1; text-align: center; }
+        .word-nko { font-family: 'Noto Sans NKo', sans-serif; font-size: 2rem; color: var(--primary); font-weight: bold; }
+        .word-sens { font-size: 1.6rem; color: #0f172a; font-weight: bold; }
 
-        .btn-action { background: var(--primary); color: white; border: none; padding: 14px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 1rem; cursor: pointer; }
-        .word-item { background: white; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 10px; }
-        .word-english { font-size: 1.2rem; color: var(--primary); font-weight: bold; font-family: 'Fira Code', monospace; }
-        .word-sens { font-size: 0.95rem; color: #475569; margin-top: 5px; }
+        .word-img-container { width: 100%; display: flex; justify-content: center; align-items: center; margin-top: 5px; }
+        .word-thumb { max-width: 100%; height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .btn-delete { background: #fee2e2; border: none; color: #ef4444; padding: 8px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-        .accent-info-text { background: white; padding: 12px; border-radius: 10px; text-align: center; margin-bottom: 15px; font-weight: bold; color: #475569; border: 1px dashed #cbd5e1; font-size: 0.9rem; }
-
-        /* QUIZ */
-        .quiz-card { background: white; border-radius: 14px; border: 1px solid #e2e8f0; padding: 15px; }
-        .quiz-question { font-size: 1.1rem; font-weight: bold; margin: 12px 0; color: #0f172a; }
+        .accent-info-text {
+            background: white; padding: 12px; border-radius: 10px; text-align: center; margin-bottom: 15px;
+            font-weight: bold; color: #475569; border: 1px dashed #cbd5e1;
+        }
 
         /* NAVIGATION BAR */
         .taskbar {
-            position: absolute; bottom: 22px; left: 0; right: 0; height: 60px;
-            background: white; border-top: 1px solid #e2e8f0;
-            display: flex; align-items: center; justify-content: space-around; z-index: 99;
+            position: absolute;
+            bottom: 22px; 
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            z-index: 99;
         }
 
         .task-item {
-            flex: 1; height: 100%; text-align: center; background: none; border: none;
-            color: #94a3b8; font-size: 0.65rem; font-weight: bold; cursor: pointer;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 2px;
+            flex: 1;
+            height: 100%;
+            text-align: center;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
-        .task-item span:first-child { font-size: 1.2rem; }
+
         .task-item.active { color: var(--primary); }
-        
-        .footer-copyright { position: absolute; bottom: 0; left: 0; right: 0; height: 22px; background: #0f172a; color: #64748b; font-size: 0.65rem; text-align: center; line-height: 22px; z-index: 99; }
+
+        .footer-copyright {
+            position: absolute; bottom: 0; left: 0; right: 0; height: 22px;
+            background: #1e293b; color: #94a3b8; font-size: 0.65rem; text-align: center;
+            line-height: 22px; font-weight: 500; direction: ltr; z-index: 99;
+        }
     </style>
 </head>
 <body>
 
 <div class="iphone-xs-screen">
-    <header id="main-title">Raccourcis OS Windows</header>
+    <header id="main-title">ߊ߬ߟߎ߬ߝߊ߬ߓߋ</header>
     
-    <div class="content" id="content-scroller">
+    <div class="content">
         
-        <div id="view-win">
+        <div id="view-alphabet">
             <div class="filter-bar">
-                <button class="btn-filter active" id="btn-win-all" onclick="filterWindowsGrid('all')">Toutes les commandes</button>
-                <button class="btn-filter" id="btn-win-fenetres" onclick="filterWindowsGrid('fenetres')">Gestion Fenêtres (Win+E, Win+⬅️, etc.)</button>
+                <button class="btn-filter active" id="btn-all" onclick="filterAlphabet('all')">ߓߍ߯</button>
+                <button class="btn-filter" id="btn-vow" onclick="filterAlphabet('voyelle')">ߛߌ߰ߙߊ߬ߟߊ</button>
+                <button class="btn-filter" id="btn-con" onclick="filterAlphabet('consonne')">ߛߌ߰ߕߊ߬ߟߊ</button>
+                <button class="btn-filter btn-quiz-toggle" id="btn-quiz" onclick="toggleQuizMode()">ߘߐ߬ߛߓߍ߬ߟߌ (Quiz)</button>
             </div>
             
-            <div class="accent-info-text">🪟 Contrôles et Gestion des Fenêtres Windows</div>
-            
-            <div id="win-tab-explorer" class="virtual-window-gui hidden">
-                <div class="win-gui-header">
-                    <span id="win-tab-window-title">📁 Explorateur Windows</span>
-                    <div class="win-gui-controls">
-                        <button class="win-gui-btn win-gui-min" onclick="controlWinTabWindow('minimize')">-</button>
-                        <button class="win-gui-btn win-gui-max" onclick="controlWinTabWindow('maximize')">🔲</button>
-                        <button class="win-gui-btn win-gui-close" onclick="controlWinTabWindow('close')">X</button>
-                    </div>
-                </div>
-                <div class="win-gui-body" id="win-tab-window-content">
-                    <div class="win-gui-explorer-item">📁 Ce PC</div>
-                    <div class="win-gui-explorer-item">📁 Disque local (C:)</div>
-                    <div class="win-gui-explorer-item">📁 Réseau</div>
-                </div>
-            </div>
-
-            <div class="alphabet-grid" id="windows-grid-container"></div>
-        </div>
-
-        <div id="view-cmd" class="hidden" style="display:flex; flex-direction:column; height:100%;">
-            <button class="btn-action" style="margin-bottom: 10px; background: #1e3a8a; border: 1px solid #3b82f6;" onclick="toggleCmdSimulatorPanel()">🖥️ Ouvrir / Fermer le Simulateur Invite CMD</button>
-            
-            <div id="cmd-simulator-zone" class="hidden" style="display:flex; flex-direction:column; flex:1;">
-                <div id="fictive-window-explorer" class="virtual-window-gui hidden">
-                    <div class="win-gui-header">
-                        <span id="virtual-window-title">📁 Explorateur Windows - Bureau Local</span>
-                        <div class="win-gui-controls">
-                            <button class="win-gui-btn win-gui-min" onclick="controlVirtualWindow('minimize')">-</button>
-                            <button class="win-gui-btn win-gui-max" onclick="controlVirtualWindow('maximize')">🔲</button>
-                            <button class="win-gui-btn win-gui-close" onclick="closeVirtualWindow()">X</button>
-                        </div>
-                    </div>
-                    <div class="win-gui-body" id="virtual-window-content"></div>
-                </div>
-
-                <div class="cmd-simulation-wrapper">
-                    <div class="cmd-sim-terminal" id="cmd-sim-logs">Microsoft Windows [Version 10.0.19045]<br>(c) Microsoft Corporation. Tous droits réservés.</div>
-                    
-                    <div class="cmd-sim-input-row">
-                        <span id="cmd-current-path-label">C:\Users\Admin></span>
-                        <input type="text" id="cmd-sim-field" placeholder="Ex: dir, md dossier, cd .." onkeydown="if(event.key==='Enter') executeCmdSim()">
-                    </div>
-                    
-                    <button class="btn-action" style="background:#22c55e; padding: 8px; margin-top:5px;" onclick="executeCmdSim()">Exécuter la commande (Entrer ↵)</button>
-                </div>
-                <button class="btn-action" style="margin-bottom: 15px; background: #0f172a; border: 1px solid #334155;" onclick="toggleCmdLexiconPanel()">📚 Afficher / Masquer le Lexique des Commandes</button>
-            </div>
-
-            <div id="cmd-lexicon-zone">
-                <div class="accent-info-text">🖥️ Lexique des Lignes de Commandes Importantes</div>
-                <div class="alphabet-grid" id="cmd-grid-container"></div>
-            </div>
-        </div>
-
-        <div id="view-alphabet" class="hidden">
-            <div class="filter-bar">
-                <button class="btn-filter active" id="btn-all" onclick="filterCBasics('all')">Tous</button>
-                <button class="btn-filter" id="btn-types" onclick="filterCBasics('types')">Variables</button>
-                <button class="btn-filter" id="btn-loops" onclick="filterCBasics('loops')">Boucles</button>
-                <button class="btn-filter" id="btn-pointers" onclick="filterCBasics('pointers')">Pointeurs 💡</button>
-                <button class="btn-filter" id="btn-tabs" onclick="filterCBasics('tabs')">Tableaux</button>
-                <button class="btn-filter" id="btn-funcs" onclick="filterCBasics('funcs')">Fonctions</button>
-                <button class="btn-filter btn-quiz-toggle" id="btn-quiz" onclick="toggleQuizMode()">Quiz</button>
-            </div>
-            
-            <div class="alphabet-grid" id="basics-container"></div>
+            <div class="nko-grid" id="alphabet-container"></div>
             
             <div id="quiz-container" class="hidden">
-                <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:bold; color:#64748b;">
-                    <span id="quiz-score">Score: 0</span>
-                    <span>Local JavaScript Compiler</span>
+                <div class="quiz-score-bar">
+                    <span id="quiz-score">ߓߙߊߞߊ: 0</span>
+                    <span id="quiz-timer">ߒߞߏ — ߔߙߏ</span>
                 </div>
                 <div class="quiz-card">
-                    <div style="font-size:0.95rem; color:#64748b; font-weight:bold;">Trouve la bonne syntaxe conforme GCC :</div>
-                    <div class="quiz-question" id="quiz-question-text">Question ici</div>
+                    <div style="font-size:0.9rem; color:#64748b; font-weight:bold;">ߢߌ߬ߣߌ߲߬ߞߊ߬ߟߌ / Lettre :</div>
+                    <div class="quiz-question" id="quiz-letter">ߊ</div>
                     <div class="quiz-options" id="quiz-options-box"></div>
                 </div>
             </div>
         </div>
 
-        <div id="view-guide" class="hidden">
-            <div class="accent-info-text">⚡ Sélectionnez un module pour charger son code :</div>
-            <div class="alphabet-grid" id="guide-modules-grid" style="margin-bottom: 20px;"></div>
-            <div class="form-card-row" id="guide-display-box" style="background: #ffffff; border-top: 4px solid #3b82f6;">
-                <b id="guide-info-title" style="color: var(--text); font-size: 0.95rem; display: block; margin-bottom: 4px;">Modèle</b>
-                <div id="guide-content-container"></div>
+        <div id="view-grammar" class="hidden">
+            <div class="filter-bar">
+                <button class="btn-filter active" onclick="selectAccent(this, '߫', 'Ton haut court (á)')">߫</button>
+                <button class="btn-filter" onclick="selectAccent(this, '߬', 'Ton bas court (à)')">߬</button>
+                <button class="btn-filter" onclick="selectAccent(this, '߭', 'Ton descendant court (ǎ)')">߭</button>
+                <button class="btn-filter" onclick="selectAccent(this, '߮', 'Ton haut long (áa)')">߮</button>
+                <button class="btn-filter" onclick="selectAccent(this, '߯', 'Ton bas long (àa)')">߯</button>
             </div>
+            <div class="accent-info-text" id="accent-info">Ton haut court (á)</div>
+            <div class="nko-grid" id="grammar-alphabet-container"></div>
         </div>
 
-        <div id="view-editor" class="hidden" style="display:flex; flex-direction:column; flex:1; height:100%;">
-            <div class="cb-action-bar">
-                <button class="btn-cb active" id="cb-mode-edit" onclick="setCbViewMode('edit')">📝 Éditeur seul</button>
-                <button class="btn-cb btn-cb-build" id="cb-mode-build" onclick="setCbViewMode('build')">⚙️ Build & Run</button>
-                <button class="btn-cb" id="cb-mode-save" onclick="setCbViewMode('save')">📁 Sauvegardes</button>
-            </div>
-
-            <div class="word-editor-container" id="ide-box-panel">
-                <div class="ide-body">
-                    <div class="line-numbers-wrapper">
-                        <div class="line-numbers-content" id="line-numbers-box"><span>1</span></div>
+        <div id="view-editor" class="hidden">
+            <div class="word-editor-container">
+                <div class="word-toolbar">
+                    <button class="btn-word-tool" onclick="formatDoc('bold')" title="Gras"><b>B</b></button>
+                    <button class="btn-word-tool" onclick="formatDoc('italic')" title="Italique"><i>I</i></button>
+                    <button class="btn-word-tool" onclick="formatDoc('underline')" title="Souligné"><u>U</u></button>
+                    <button class="btn-word-tool" onclick="formatDoc('justifyRight')" title="Aligner à droite">➔</button>
+                    <button class="btn-word-tool" onclick="formatDoc('justifyCenter')" title="Centrer">↔</button>
+                    <button class="btn-word-tool" onclick="formatDoc('justifyLeft')" title="Aligner à gauche">ߕ</button>
+                    
+                    <div class="word-color-picker-wrapper" title="Couleur du texte">
+                        <span>🎨</span>
+                        <input type="color" id="editor-font-color" oninput="changeTextColor(this.value)" value="#0f172a">
                     </div>
-                    <div class="editor-wrapper">
-                        <div class="editor-backdrop" id="editor-highlight-box"></div>
-                        <textarea id="c-editor" class="editor-textarea" spellcheck="false" placeholder="// Tapez votre code C..." oninput="updateIdeView()" onscroll="syncIdeScroll()"></textarea>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="console-container" id="console-box-panel" style="flex: 1; display: flex; flex-direction: column;">
-                <div class="console-header">
-                    <span>Code::Blocks Terminal Log (Offline Engine)</span>
-                    <span style="cursor:pointer;color:#ef4444;" onclick="clearTerminalDisplay()">Reset</span>
-                </div>
-                <div id="local-terminal" class="terminal-box" style="flex: 1; height: auto;"></div>
-            </div>
 
-            <div id="saved-scripts-panel" class="hidden" style="margin-top:10px; overflow-y:auto; max-height:220px;">
-                <button class="btn-action" style="background:#059669; padding: 10px; margin-bottom: 10px;" onclick="saveEditorText()">💾 Sauvegarder le fichier actuel</button>
-                <div id="editor-local-saved-container"></div>
+                    <button class="btn-word-tool" onclick="formatDoc('removeFormat')" title="Effacer mise en forme" style="color:red; margin-left: auto;">✕</button>
+                </div>
+                <div id="nko-rainbow-editor" class="editor-rainbow-box" contenteditable="true" placeholder="ߛߓߍߟߌ ߘߊߡߌ߬ߣߊ߬ ߦߊ߲߬..."></div>
             </div>
+            <div style="margin-top: 12px;">
+                <button class="btn-action" onclick="saveEditorText()">ߊ߬ ߡߊߙߊ߲߬ (Enregistrer)</button>
+            </div>
+            <div class="manage-title" style="text-align:center;">ߛߓߍߟߌ߫ ߡߊߙߊ߲ߍ ߜߊ߲߬ߠߊ߫</div>
+            <div id="saved-notes-container"></div>
+        </div>
+
+        <div id="view-add" class="hidden">
+            <div class="form-card">
+                <h3 style="text-align:center;">ߡߟߊߡߊߦߟߍ</h3>
+                <label>ߔߙߊߕߐ߲ ߁ (N'ko)</label>
+                <input type="text" id="w-nko" class="textbox" placeholder="ߓߊߥߟߎ">
+                <label>ߔߙߊߕߐ߲ ߆ (Sens/Français)</label>
+                <input type="text" id="w-sens" class="textbox" placeholder="Lézard">
+                <label>ߖߌ߬ߦߊ߬ߓߍ (Image)</label>
+                <input type="file" id="w-img" accept="image/*" class="textbox" style="padding: 10px;">
+                <button class="btn-action" onclick="saveWord()">ߟߊ߬ߘߊ߲߬</button>
+            </div>
+            <div class="manage-title" style="text-align:center;">ߟߊ߬ߓߋ߬</div>
+            <div id="admin-delete-container"></div>
         </div>
 
         <div id="view-dico" class="hidden">
             <div class="filter-bar">
-                <button class="btn-filter active" id="btn-dico-words" onclick="toggleDicoTab('dict')">Mes Mémos</button>
-                <button class="btn-filter" id="btn-dico-notes" onclick="toggleDicoTab('zana')">Mes Scripts</button>
+                <button class="btn-filter active" id="btn-dico-words" onclick="toggleDicoTab('dict')">ߘߎ߲ߓߎ</button>
+                <button class="btn-filter" id="btn-dico-notes" onclick="toggleDicoTab('zana')">ߛߊ߲ߊ</button>
             </div>
             <div class="dico-container"></div>
         </div>
@@ -628,829 +502,380 @@
     </div>
 
     <nav class="taskbar">
-        <button class="task-item active" id="tab-win" onclick="switchView('win')"><span>🪟</span><span>Windows</span></button>
-        <button class="task-item" id="tab-cmd" onclick="switchView('cmd')"><span>🖥️</span><span>Invite CMD</span></button>
-        <button class="task-item" id="tab-alphabet" onclick="switchView('alphabet')"><span>📚</span><span>Bases C</span></button>
-        <button class="task-item" id="tab-guide" onclick="switchView('guide')"><span>⚡</span><span>Exemples</span></button>
-        <button class="task-item" id="tab-editor" onclick="switchView('editor')"><span>⚙️</span><span>Éditeur</span></button>
-        <button class="task-item" id="tab-dico" onclick="switchView('dico')"><span>📁</span><span>Mémos</span></button>
+        <button class="task-item active" id="tab-alphabet" onclick="switchView('alphabet')">ߊ߬ߟߎ߬ߝߊ߬ߓߋ</button>
+        <button class="task-item" id="tab-grammar" onclick="switchView('grammar')">ߞߊ߲ߡߊߛߙߋ</button>
+        <button class="task-item" id="tab-editor" onclick="switchView('editor')">ߛߓߍߟߊ</button>
+        <button class="task-item" id="tab-add" onclick="switchView('add')">ߟߊ߬ߘߊ߲߬</button>
+        <button class="task-item" id="tab-dico" onclick="switchView('dico')">ߘߎ߲ߓߎ</button>
     </nav>
 
-    <div class="footer-copyright">© Univers Informatique +226 74 95 81 05 — Local Transpiler Engine</div>
+    <div class="footer-copyright">
+        © Univers Informatique +226 74 95 81 05
+    </div>
 </div>
 
 <script>
-    const rainbowColors = ['#2563eb', '#1d4ed8', '#0284c7', '#059669', '#ea580c', '#b45309', '#06b6d4', '#4d7c0f', '#7c3aed', '#db2777'];
-    function getColor(i) { return rainbowColors[i % rainbowColors.length]; }
+    const rainbowColors = ['#ef4444', '#f97316', '#f59e0b', '#10b981', '#06b6d4', '#3b82f6', '#6366f1', '#8b5cf6', '#d946ef', '#ec4899'];
+    function getRainbowColor(index) { return rainbowColors[index % rainbowColors.length]; }
 
-    let currentPath = "C:\\Users\\Admin";
-    let fileSystem = {
-        "C:": {
-            type: "dir",
-            content: {
-                "Users": {
-                    type: "dir",
-                    content: {
-                        "Admin": {
-                            type: "dir",
-                            content: {
-                                "Bureau": { type: "dir", content: {} },
-                                "Documents": { type: "dir", content: {} },
-                                "Images": { type: "dir", content: {} },
-                                "Videos": { type: "dir", content: {} }
-                            }
-                        }
-                    }
-                }
-            }
+    const nkoAlphabet = [
+        { letter: "ߊ", type: "voyelle", latin: "A" }, { letter: "ߋ", type: "voyelle", latin: "É" }, 
+        { letter: "ߌ", type: "voyelle", latin: "I" }, { letter: "ߍ", type: "voyelle", latin: "Ɛ" }, 
+        { letter: "ߎ", type: "voyelle", latin: "U" }, { letter: "ߏ", type: "voyelle", latin: "O" },
+        { letter: "ߐ", type: "voyelle", latin: "Ɔ" }, { letter: "ߓ", type: "consonne", latin: "Ba" }, 
+        { letter: "ߔ", type: "consonne", latin: "Pa" }, { letter: "ߕ", type: "consonne", latin: "Ta" }, 
+        { letter: "ߖ", type: "consonne", latin: "Ja" }, { letter: "ߗ", type: "consonne", latin: "Cha" }, 
+        { letter: "ߘ", type: "consonne", latin: "Da" }, { letter: "ߙ", type: "consonne", latin: "Ra" }, 
+        { letter: "ߛ", type: "consonne", latin: "Sa" }, { letter: "ߜ", type: "consonne", latin: "Gba" }, 
+        { letter: "ߝ", type: "consonne", latin: "Fa" }, { letter: "ߞ", type: "consonne", latin: "Ka" }, 
+        { letter: "ߟ", type: "consonne", latin: "La" }, { letter: "ߡ", type: "consonne", latin: "Ma" }, 
+        { letter: "ߢ", type: "consonne", latin: "Nya" }, { letter: "ߣ", type: "consonne", latin: "Na" }, 
+        { letter: "ߤ", type: "consonne", latin: "Ha" }, { letter: "ߥ", type: "consonne", latin: "Wa" }, 
+        { letter: "ߦ", type: "consonne", latin: "Ya" }
+    ];
+
+    const accentRules = {
+        '߫': { desc: 'Ton haut court', marker: '́', long: false },
+        '߬': { desc: 'Ton bas court', marker: '̀', long: false },
+        '߭': { desc: 'Ton descendant court', marker: '̌', long: false },
+        '߮': { desc: 'Ton haut long', marker: '́', long: true },
+        '߯': { desc: 'Ton bas long', marker: '̀', long: true }
+    };
+
+    let isQuizMode = false;
+    let quizScore = 0;
+    let currentQuizLetter = null;
+    let currentDicoView = 'dict'; // Suivi du mode actif dans le dictionnaire
+
+    window.onload = () => {
+        renderAlphabet('all');
+        renderGrammarAlphabet('߫');
+        if (!localStorage.getItem('nko_dict')) {
+            localStorage.setItem('nko_dict', JSON.stringify([
+                { nko: "ߓߊ", sens: "Mère", img: "" },
+                { nko: "ߞߊߙߊ߲", sens: "Étudier", img: "" }
+            ]));
         }
+        renderSavedNotes();
     };
 
-    const cBasicsData = [
-        { name: "int", type: "types", desc: "Type entier standard (4 octets sur architecture x86_64). Format: %d." },
-        { name: "float", type: "types", desc: "Nombre à virgule flottante simple précision (4 octets). Format: %f." },
-        { name: "char", type: "types", desc: "Caractère unique ou entier signé court (1 octet). Format: %c." },
-        { name: "for", type: "loops", desc: "Boucle de contrôle itérative stricte: for(initialisation; condition; incrément)." },
-        { name: "while", type: "loops", desc: "Structure de répétition conditionnelle pré-testée (Tant que)." },
-        { name: "if / else", type: "types", desc: "Structure conditionnelle binaire d'aiguillage d'instructions." },
-        { name: "printf", type: "types", desc: "Écrit sur le flux standard d'écriture 'stdout' avec formatage." },
-        { name: "scanf", type: "types", desc: "Lit sur le flux standard d'entrée 'stdin'. Requiert pointeur d'adresse (&)." },
-        { name: "*ptr (Pointeur)", type: "pointers", desc: "Déclaration: int *p; Spécifie que la variable stockera l'adresse d'un entier." },
-        { name: "& (Adresse)", type: "pointers", desc: "Mode d'emploi: p = &variable; Récupère la position en mémoire vive d'une variable." },
-        { name: "*p (Valeur)", type: "pointers", desc: "Mode d'emploi: *p = 50; Permet de modifier directement la case mémoire ciblée." },
-        { name: "Tableaux []", type: "tabs", desc: "Allocation contiguë de mémoire statique homogène indexée à 0." },
-        { name: "Fonctions", type: "funcs", desc: "Sous-programme modulaire disposant d'un cadre d'activation propre." },
-        { name: "Type void", type: "funcs", desc: "Spécificateur de type incomplet signalant l'absence de données retournées." },
-        { name: "return", type: "funcs", desc: "Restaure le registre d'instruction précédent et renvoie un code d'état." }
-    ];
-
-    const windowsControlsData = [
-        { name: "CTRL + E", desc: "Simuler l'ouverture de l'Explorateur Windows.", type: "fenetres", syntaxe: "Ouvrir", action: "open" },
-        { name: "ALT + F4", desc: "Simuler la fermeture de l'application active.", type: "fenetres", syntaxe: "Quitter", action: "close" },
-        { name: "WIN + ⬆️", desc: "Simuler l'agrandissement maximal de la fenêtre.", type: "fenetres", syntaxe: "Agrandir", action: "maximize" },
-        { name: "WIN + ⬇️", desc: "Simuler la réduction minimale de la fenêtre.", type: "fenetres", syntaxe: "Réduire", action: "minimize" },
-        { name: "CTRL+SHIFT+N", desc: "Créer un nouveau dossier.", type: "commandes", syntaxe: "Nouveau Dossier", action: "none" },
-        { name: "ALT+SHIFT+F10", desc: "Ouvrir le menu de correction ou d'exécution rapide.", type: "commandes", syntaxe: "Quick Run", action: "none" }
-    ];
-
-    const cmdCommandsData = [
-        { name: "cmd", desc: "Ouvrir l'invite de commandes système.", syntaxe: "Lancement" },
-        { name: "cd dossier", desc: "Entrer dans un sous-dossier spécifié.", syntaxe: "Navigation" },
-        { name: "cd..", desc: "Revenir au dossier parent supérieur.", syntaxe: "Retour" },
-        { name: "md dossier", desc: "Créer un nouveau répertoire.", syntaxe: "Création" },
-        { name: "rd dossier", desc: "Supprimer un répertoire.", syntaxe: "Suppression" },
-        { name: "del fichier", desc: "Supprimer un fichier.", syntaxe: "Suppression" },
-        { name: "ren old new", desc: "Renommer un fichier ou dossier.", syntaxe: "Renommer" },
-        { name: "copy src dest", desc: "Copier un fichier ou dossier.", syntaxe: "Copie" },
-        { name: "move src dest", desc: "Déplacer/Couper un fichier ou dossier.", syntaxe: "Déplacement" },
-        { name: "type nul > f.txt", desc: "Créer un fichier texte .txt vide.", syntaxe: "Fichier TXT" },
-        { name: "dir", desc: "Lister les éléments du dossier actuel.", syntaxe: "Affichage" },
-        { name: "cls", desc: "Effacer l'intégralité du terminal.", syntaxe: "Nettoyage" },
-        { name: "start .", desc: "Ouvrir l'emplacement dans l'explorateur graphique.", syntaxe: "Interface" }
-    ];
-
-    const guideCodes = {
-        addition: { title: "1. Fonction Somme", code: "#include <stdio.h>\n\nint faireSomme(int x, int y) {\n    return x + y;\n}\n\nint main() {\n    int a, b, res;\n    printf(\"Entrez le premier nombre : \");\n    scanf(\"%d\", &a);\n    printf(\"Entrez le deuxieme nombre : \");\n    scanf(\"%d\", &b);\n    res = faireSomme(a, b);\n    printf(\"La somme via fonction est : %d\\n\", res);\n    return 0;\n}" },
-        multiplication: { title: "2. Fonction Produit", code: "#include <stdio.h>\n\nint multiplier(int x, int y) {\n    return x * y;\n}\n\nint main() {\n    int a, b, produit;\n    printf(\"Entrez a : \");\n    scanf(\"%d\", &a);\n    printf(\"Entrez b : \");\n    scanf(\"%d\", &b);\n    produit = multiplier(a, b);\n    printf(\"Produit = %d\\n\", produit);\n    return 0;\n}" },
-        soustraction: { title: "3. Soustraction", code: "#include <stdio.h>\n\nint main() {\n    int a, b;\n    printf(\"Entrez a : \");\n    scanf(\"%d\", &a);\n    printf(\"Entrez b : \");\n    scanf(\"%d\", &b);\n    printf(\"Reste = %d\\n\", a - b);\n    return 0;\n}" },
-        division: { title: "4. Vérif Division", code: "#include <stdio.h>\n\nint verifierEtDiviser(int divd, int divsr) {\n    if(divsr == 0) return 0;\n    return divd / divsr;\n}\n\nint main() {\n    int a, b, quot;\n    printf(\"Dividende : \");\n    scanf(\"%d\", &a);\n    printf(\"Diviseur : \");\n    scanf(\"%d\", &b);\n    if(b != 0) {\n        quot = verifierEtDiviser(a, b);\n        printf(\"Quotient de la fonction = %d\\n\", quot);\n    } else {\n        printf(\"Erreur: Division par 0 interdite !\\n\");\n    }\n    return 0;\n}" },
-        pair_impair: { title: "5. Fonction Test Pair", code: "#include <stdio.h>\n\nint estPair(int nombre) {\n    if(nombre % 2 == 0) return 1;\n    return 0;\n}\n\nint main() {\n    int n;\n    printf(\"Entrez un nombre : \");\n    scanf(\"%d\", &n);\n    if(estPair(n) == 1) printf(\"%d est PAIR\\n\", n);\n    else printf(\"%d est IMPAIR\\n\", n);\n    return 0;\n}" },
-        factorielle: { title: "6. Fonction Factorielle", code: "#include <stdio.h>\n\nint calculerFact(int n) {\n    int f = 1;\n    for(int i=1; i<=n; i++) f *= i;\n    return f;\n}\n\nint main() {\n    int n, resultat;\n    printf(\"Nombre : \");\n    scanf(\"%d\", &n);\n    resultat = calculerFact(n);\n    printf(\"Factorielle via fonction = %d\\n\", resultat);\n    return 0;\n}" },
-        maximum: { title: "7. Fonction Max", code: "#include <stdio.h>\n\nint trouverMax(int x, int y) {\n    return (x > y) ? x : y;\n}\n\nint main() {\n    int a, b, m;\n    printf(\"a : \"); scanf(\"%d\", &a);\n    printf(\"b : \"); scanf(\"%d\", &b);\n    m = trouverMax(a, b);\n    printf(\"Max trouve = %d\\n\", m);\n    return 0;\n}" },
-        tableau_somme: { title: "8. Somme Tableau", code: "#include <stdio.h>\n\nint main() {\n    int t[3], s = 0;\n    for(int i=0; i<3; i++) {\n        printf(\"Valeur %d : \", i+1);\n        scanf(\"%d\", &t[i]);\n        s += t[i];\n    }\n    printf(\"Somme totale = %d\\n\", s);\n    return 0;\n}" },
-        echanger: { title: "9. Échange Pointeurs", code: "#include <stdio.h>\n\nint main() {\n    int x = 10, y = 20;\n    int *p1 = &x, *p2 = &y, tmp;\n    tmp = *p1; *p1 = *p2; *p2 = tmp;\n    printf(\"x = %d, y = %d\\n\", x, y);\n    return 0;\n}" },
-        chaine_longueur: { title: "10. Longueur Chaîne", code: "#include <stdio.h>\n\nint main() {\n    char str[20] = \"Univers\"; int l = 0;\n    while(str[l] != '\\0') l++;\n    printf(\"Longueur = %d\\n\", l);\n    return 0;\n}" },
-        boucle_for: { title: "11. Compteur For", code: "#include <stdio.h>\n\nint main() {\n    for(int i=1; i<=10; i++) printf(\"%d \", i);\n    printf(\"\\n\");\n    return 0;\n}" },
-        structure_point: { title: "12. Structure", code: "#include <stdio.h>\n\nstruct Bureau { int id; int code; };\n\nint main() {\n    struct Bureau b = {101, 226};\n    printf(\"Bureau %d, Code %d\\n\", b.id, b.code);\n    return 0;\n}" }
-    };
-
-    let activeCbMode = 'edit';
-    let localSavedMemos = [];
-    let currentQuizIndex = 0, quizScore = 0;
-
-    const quizQuestions = [
-        { q: "Comment déclarer un pointeur d'entier correct ?", o: ["int p;", "int *p;", "pointer p;", "&int p;"], a: 1 },
-        { q: "Quelle fonction écrit sur stdout ?", o: ["scanf", "printf", "print", "write"], a: 1 },
-        { q: "Quel symbole désigne l'adresse d'une variable ?", o: ["*", "&", "%", "#"], a: 1 }
-    ];
-
-    window.onload = function() {
-        renderWindowsGrid('all');
-        renderCmdGrid();
-        filterCBasics('all');
-        renderGuideGrid();
-        loadSavedScripts();
-        renderSavedScriptsInDico();
-        initQuizQuestion();
-        updateCmdPathLabel();
-    };
-
-    function filterWindowsGrid(type) {
-        document.getElementById('btn-win-all').classList.toggle('active', type === 'all');
-        document.getElementById('btn-win-fenetres').classList.toggle('active', type === 'fenetres');
-        renderWindowsGrid(type);
-    }
-
-    function renderWindowsGrid(filterType) {
-        const container = document.getElementById('windows-grid-container');
-        container.innerHTML = '';
-        windowsControlsData.forEach((item, index) => {
-            if (filterType !== 'all' && item.type !== filterType) return;
-            
-            const card = document.createElement('div');
-            card.className = 'mini-card';
-            card.style.borderTop = `4px solid ${getColor(index)}`;
-            card.innerHTML = `<span class="letter-main">${item.name}</span>
-                              <span class="letter-pron">${item.desc}</span>
-                              <span class="cmd-syntax-tag">${item.syntaxe}</span>`;
-            
-            card.onclick = () => {
-                if(item.action === "open") {
-                    controlWinTabWindow('open');
-                } else if(item.action === "close") {
-                    controlWinTabWindow('close');
-                } else if(item.action === "maximize") {
-                    controlWinTabWindow('maximize');
-                } else if(item.action === "minimize") {
-                    controlWinTabWindow('minimize');
-                }
-            };
-            container.appendChild(card);
-        });
-    }
-
-    function controlWinTabWindow(action) {
-        const win = document.getElementById('win-tab-explorer');
-        if(action === 'open') {
-            win.classList.remove('hidden');
-            win.classList.remove('minimized');
-            win.classList.remove('maximized');
-        } else if(action === 'close') {
-            win.classList.add('hidden');
-        } else if(action === 'minimize') {
-            win.classList.toggle('minimized');
-        } else if(action === 'maximize') {
-            win.classList.toggle('maximized');
-        }
-    }
-
-    function renderCmdGrid() {
-        const container = document.getElementById('cmd-grid-container');
-        container.innerHTML = '';
-        cmdCommandsData.forEach((item, index) => {
-            const card = document.createElement('div');
-            card.className = 'mini-card';
-            card.style.borderTop = `4px solid ${getColor(index + 3)}`;
-            card.innerHTML = `<span class="letter-main">${item.name}</span>
-                              <span class="letter-pron">${item.desc}</span>
-                              <span class="cmd-syntax-tag">${item.syntaxe}</span>`;
-            container.appendChild(card);
-        });
-    }
-
-    function filterCBasics(category) {
-        if(category === 'quiz') return;
-        document.getElementById('quiz-container').classList.add('hidden');
-        document.getElementById('basics-container').classList.remove('hidden');
+    function renderAlphabet(filter) {
+        const container = document.getElementById('alphabet-container');
+        if (!container) return;
+        const items = filter === 'all' ? nkoAlphabet : nkoAlphabet.filter(i => i.type === filter);
         
-        document.querySelectorAll('.filter-bar .btn-filter').forEach(btn => {
-            if(btn.id !== 'btn-quiz') btn.classList.remove('active');
-        });
-        const activeBtn = document.getElementById('btn-' + category);
-        if(activeBtn) activeBtn.classList.add('active');
-
-        const container = document.getElementById('basics-container');
-        container.innerHTML = '';
-        cBasicsData.forEach((item, i) => {
-            if(category !== 'all' && item.type !== category) return;
-            const card = document.createElement('div');
-            card.className = 'mini-card';
-            card.style.borderTop = `4px solid ${getColor(i + 5)}`;
-            card.innerHTML = `<span class="letter-main">${item.name}</span><span class="letter-pron">${item.desc}</span>`;
-            container.appendChild(card);
-        });
+        container.innerHTML = items.map((item, idx) => `
+            <div class="mini-card">
+                <span class="nko-letter" style="color: ${getRainbowColor(idx)};">${item.letter}</span>
+                <span class="latin-pron">${item.latin}</span>
+            </div>
+        `).join('');
     }
 
     function toggleQuizMode() {
-        const qContainer = document.getElementById('quiz-container');
-        const bContainer = document.getElementById('basics-container');
-        const isQuizHidden = qContainer.classList.contains('hidden');
-        
-        document.querySelectorAll('.filter-bar .btn-filter').forEach(b => b.classList.remove('active'));
-        
-        if(isQuizHidden) {
-            qContainer.classList.remove('hidden');
-            bContainer.classList.add('hidden');
-            document.getElementById('btn-quiz').classList.add('active');
+        isQuizMode = !isQuizMode;
+        const grid = document.getElementById('alphabet-container');
+        const quizBox = document.getElementById('quiz-container');
+        const quizBtn = document.getElementById('btn-quiz');
+
+        document.querySelectorAll('#view-alphabet .btn-filter').forEach(b => b.classList.remove('active'));
+
+        if(isQuizMode) {
+            grid.classList.add('hidden');
+            quizBox.classList.remove('hidden');
+            quizBtn.classList.add('active');
+            quizScore = 0;
+            updateScoreDisplay();
+            generateNextQuizQuestion();
         } else {
-            filterCBasics('all');
+            grid.classList.remove('hidden');
+            quizBox.classList.add('hidden');
+            quizBtn.classList.remove('active');
+            document.getElementById('btn-all').classList.add('active');
+            renderAlphabet('all');
         }
     }
 
-    function initQuizQuestion() {
-        const q = quizQuestions[currentQuizIndex];
-        document.getElementById('quiz-question-text').innerText = q.q;
-        const box = document.getElementById('quiz-options-box');
-        box.innerHTML = '';
-        q.o.forEach((opt, idx) => {
-            const b = document.createElement('button');
-            b.className = 'btn-filter';
-            b.style.width = '100%'; b.style.marginBottom = '6px'; b.style.textAlign = 'left'; b.style.padding = '12px';
-            b.innerText = opt;
-            b.onclick = () => {
-                if(idx === q.a) { quizScore += 20; alert("✅ Correct !"); }
-                else { alert("❌ Faux."); }
-                document.getElementById('quiz-score').innerText = `Score: ${quizScore}`;
-                currentQuizIndex = (currentQuizIndex + 1) % quizQuestions.length;
-                initQuizQuestion();
-            };
-            box.appendChild(b);
-        });
-    }
+    function generateNextQuizQuestion() {
+        const randomIndex = Math.floor(Math.random() * nkoAlphabet.length);
+        currentQuizLetter = nkoAlphabet[randomIndex];
 
-    function renderGuideGrid() {
-        const grid = document.getElementById('guide-modules-grid');
-        grid.innerHTML = '';
-        Object.keys(guideCodes).forEach((key, i) => {
-            const item = guideCodes[key];
-            const div = document.createElement('div');
-            div.className = 'mini-card';
-            div.style.padding = '8px 12px';
-            div.style.background = '#f1f5f9';
-            div.innerHTML = `<span style="font-size:0.78rem;font-weight:bold;color:#1e3a8a;">${item.title}</span>`;
-            div.onclick = () => {
-                document.getElementById('guide-info-title').innerText = item.title;
-                document.getElementById('guide-content-container').innerHTML = `<div class="code-block">${item.code}</div><button class="btn-action" style="padding:8px;font-size:0.8rem;background:#0284c7;" onclick="injectCodeToEditor('${key}')">⚡ Injecter dans l'Éditeur</button>`;
-            };
-            grid.appendChild(div);
-        });
-    }
+        document.getElementById('quiz-letter').innerText = currentQuizLetter.letter;
+        document.getElementById('quiz-letter').style.color = getRainbowColor(randomIndex);
 
-    function injectCodeToEditor(key) {
-        document.getElementById('c-editor').value = guideCodes[key].code;
-        switchView('editor');
-        updateIdeView();
-    }
-
-    function toggleCmdSimulatorPanel() {
-        document.getElementById('cmd-simulator-zone').classList.toggle('hidden');
-    }
-    function toggleCmdLexiconPanel() {
-        document.getElementById('cmd-lexicon-zone').classList.toggle('hidden');
-    }
-
-    function updateCmdPathLabel() {
-        document.getElementById('cmd-current-path-label').innerText = currentPath + ">";
-    }
-
-    function getFolderNode(pathStr) {
-        let parts = pathStr.split('\\').filter(p => p !== "");
-        let current = fileSystem["C:"];
-        for(let i = 1; i < parts.length; i++) {
-            if(current.content && current.content[parts[i]]) {
-                current = current.content[parts[i]];
-            } else {
-                return null;
+        let choices = [currentQuizLetter.latin];
+        while(choices.length < 4) {
+            let randomChoice = nkoAlphabet[Math.floor(Math.random() * nkoAlphabet.length)].latin;
+            if(!choices.includes(randomChoice)) {
+                choices.push(randomChoice);
             }
         }
-        return current;
+        choices.sort(() => Math.random() - 0.5);
+
+        const optionsBox = document.getElementById('quiz-options-box');
+        optionsBox.innerHTML = choices.map(choice => `
+            <button class="btn-option" onclick="verifyQuizAnswer('${choice}', this)">${choice}</button>
+        `).join('');
     }
 
-    function executeCmdSim() {
-        const inputField = document.getElementById('cmd-sim-field');
-        const rawVal = inputField.value.trim();
-        const val = rawVal.toLowerCase();
-        const logs = document.getElementById('cmd-sim-logs');
-        if(!rawVal) return;
-        
-        logs.innerHTML += `<br><span style="color:#38bdf8;">${currentPath}&gt; ${rawVal}</span>`;
-        let currentNode = getFolderNode(currentPath);
-
-        if(val === 'dir') {
-            if (currentNode && currentNode.content) {
-                let entries = Object.keys(currentNode.content);
-                logs.innerHTML += `<br> Répertoire de ${currentPath}<br><br>`;
-                if(entries.length === 0) {
-                    logs.innerHTML += `0 fichier(s) trouvé(s).`;
-                } else {
-                    entries.forEach(key => {
-                        let item = currentNode.content[key];
-                        if(item.type === 'dir') {
-                            logs.innerHTML += `09/06/2026  10:00    &lt;DIR&gt;          ${key}<br>`;
-                        } else {
-                            logs.innerHTML += `09/06/2026  10:00                24 ${key}<br>`;
-                        }
-                    });
-                }
-            }
-        } else if(val === 'cls') {
-            logs.innerHTML = 'Microsoft Windows [Version 10.0.19045]<br>(c) Microsoft Corporation. Tous droits réservés.';
-        } else if(val === 'help') {
-            logs.innerHTML += `<br>Commandes : dir, cls, md, rd, cd, cd.., type nul > f.txt, del, ren, copy, move, exit`;
-        } else if(val.startsWith('ren ')) {
-            let parts = rawVal.split(' ');
-            if(parts.length === 3 && currentNode && currentNode.content) {
-                let oldName = parts[1], newName = parts[2];
-                if(currentNode.content[oldName]) {
-                    currentNode.content[newName] = currentNode.content[oldName];
-                    delete currentNode.content[oldName];
-                    logs.innerHTML += `<br>Renommé : "${oldName}" en "${newName}".`;
-                } else { logs.innerHTML += `<br>Erreur : introuvable.`; }
-            }
-        } else if(val.startsWith('copy ')) {
-            let parts = rawVal.split(' ');
-            if(parts.length === 3 && currentNode && currentNode.content) {
-                let src = parts[1], dest = parts[2];
-                if(currentNode.content[src]) {
-                    currentNode.content[dest] = JSON.parse(JSON.stringify(currentNode.content[src]));
-                    logs.innerHTML += `<br>Copié vers "${dest}".`;
-                } else { logs.innerHTML += `<br>Erreur : introuvable.`; }
-            }
-        } else if(val.startsWith('move ')) {
-            let parts = rawVal.split(' ');
-            if(parts.length === 3 && currentNode && currentNode.content) {
-                let src = parts[1], dest = parts[2];
-                if(currentNode.content[src]) {
-                    currentNode.content[dest] = currentNode.content[src];
-                    delete currentNode.content[src];
-                    logs.innerHTML += `<br>Déplacé vers "${dest}".`;
-                } else { logs.innerHTML += `<br>Erreur : introuvable.`; }
-            }
-        } else if(val === 'cd..') {
-            if(currentPath !== "C:") {
-                let parts = currentPath.split('\\');
-                parts.pop();
-                currentPath = parts.join('\\');
-            }
-        } else if(val.startsWith('cd ')) {
-            let targetDir = rawVal.substring(3).trim();
-            if(targetDir === "..") {
-                if(currentPath !== "C:") {
-                    let parts = currentPath.split('\\');
-                    parts.pop();
-                    currentPath = parts.join('\\');
-                }
-            } else {
-                let checkPath = currentPath === "C:" ? "C:\\" + targetDir : currentPath + "\\" + targetDir;
-                let node = getFolderNode(checkPath);
-                if(node && node.type === 'dir') {
-                    currentPath = checkPath;
-                } else {
-                    logs.innerHTML += `<br>Le système ne trouve pas le chemin spécifié : "${targetDir}"`;
-                }
-            }
-        } else if(val.startsWith('md ')) {
-            let newDirName = rawVal.substring(3).trim();
-            if(newDirName && currentNode && currentNode.content) {
-                currentNode.content[newDirName] = { type: "dir", content: {} };
-                logs.innerHTML += `<br>Dossier "${newDirName}" créé.`;
-            }
-        } else if(val.startsWith('rd ')) {
-            let target = rawVal.substring(3).trim();
-            if(currentNode.content[target] && currentNode.content[target].type === 'dir') {
-                delete currentNode.content[target];
-                logs.innerHTML += `<br>Dossier "${target}" supprimé.`;
-            } else { logs.innerHTML += `<br>Dossier introuvable.`; }
-        } else if(val.startsWith('del ')) {
-            let target = rawVal.substring(4).trim();
-            if(currentNode.content[target] && currentNode.content[target].type === 'file') {
-                delete currentNode.content[target];
-                logs.innerHTML += `<br>Fichier "${target}" supprimé.`;
-            } else { logs.innerHTML += `<br>Fichier introuvable.`; }
-        } else if(val.startsWith('type nul >')) {
-            let filePart = rawVal.split('>')[1].trim();
-            if(filePart.endsWith('.txt')) {
-                if(currentNode && currentNode.content) {
-                    currentNode.content[filePart] = { type: "file", content: "" };
-                    logs.innerHTML += `<br>Fichier texte "${filePart}" créé.`;
-                }
-            } else {
-                logs.innerHTML += `<br>Erreur : Seuls les fichiers .txt sont gérés.`;
-            }
-        } else if(val === 'start .') {
-            document.getElementById('fictive-window-explorer').classList.remove('hidden');
-        } else if(val === 'exit') {
-            toggleCmdSimulatorPanel();
+    function verifyQuizAnswer(selected, buttonElement) {
+        if(selected === currentQuizLetter.latin) {
+            quizScore++;
+            buttonElement.style.background = "#d1fae5";
+            buttonElement.style.borderColor = "#10b981";
+            updateScoreDisplay();
+            setTimeout(() => { generateNextQuizQuestion(); }, 600);
         } else {
-            logs.innerHTML += `<br>'${rawVal}' n'est pas reconnu comme commande.`;
-        }
-
-        renderVirtualExplorer();
-        inputField.value = '';
-        updateCmdPathLabel();
-        logs.scrollTop = logs.scrollHeight;
-    }
-
-    function renderVirtualExplorer() {
-        let contentZone = document.getElementById('virtual-window-content');
-        let currentNode = getFolderNode(currentPath);
-        document.getElementById('virtual-window-title').innerText = `📁 Explorateur Windows - ${currentPath}`;
-        
-        if (currentNode && currentNode.content) {
-            let keys = Object.keys(currentNode.content);
-            if(keys.length === 0) {
-                contentZone.innerHTML = '<div style="color:#64748b;font-style:italic;">Dossier vide</div>';
-                return;
-            }
-            contentZone.innerHTML = keys.map(k => {
-                let icon = currentNode.content[k].type === 'dir' ? '📁' : '📄';
-                return `<div class="win-gui-explorer-item">${icon} ${k}</div>`;
-            }).join('');
+            buttonElement.style.background = "#fee2e2";
+            buttonElement.style.borderColor = "#ef4444";
+            alert(`Faux ! La bonne réponse était : ${currentQuizLetter.latin}`);
+            generateNextQuizQuestion();
         }
     }
 
-    function controlVirtualWindow(action) {
-        const win = document.getElementById('fictive-window-explorer');
-        if(action === 'minimize') win.classList.toggle('minimized');
-        if(action === 'maximize') win.classList.toggle('maximized');
+    function updateScoreDisplay() {
+        document.getElementById('quiz-score').innerText = `ߓߙߊߞߊ: ${quizScore}`;
     }
 
-    function closeVirtualWindow() { document.getElementById('fictive-window-explorer').classList.add('hidden'); }
-
-    function updateIdeView() {
-        const ta = document.getElementById('c-editor');
-        const highlightBox = document.getElementById('editor-highlight-box');
-        const lineBox = document.getElementById('line-numbers-box');
-        
-        let code = ta.value;
-        let html = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        
-        html = html.replace(/(#include\s+&lt;[^&]+&gt;|#define\s+\w+\s+\d+)/g, '<span class="token-directive">$1</span>');
-        html = html.replace(/("(.*?)")/g, '<span class="token-string">$1</span>');
-        html = html.replace(/(\/\/.*?$)/gm, '<span class="token-comment">$1</span>');
-        html = html.replace(/\b(int|float|char|void|double|struct)\b/g, '<span class="token-type">$1</span>');
-        html = html.replace(/\b(for|while|if|else|return|switch|case|break)\b/g, '<span class="token-keyword">$1</span>');
-        html = html.replace(/\b(printf|scanf|main|multiplier|faireSomme|verifierEtDiviser|estPair|calculerFact|trouverMax)\b/g, '<span class="token-func">$1</span>');
-
-        highlightBox.innerHTML = html + "\n";
-        
-        const lineCount = code.split('\n').length;
-        let lineHTML = '';
-        for(let i = 1; i <= lineCount; i++) lineHTML += `<span>${i}</span>`;
-        lineBox.innerHTML = lineHTML;
-        syncIdeScroll();
-    }
-
-    function syncIdeScroll() {
-        const ta = document.getElementById('c-editor');
-        document.getElementById('editor-highlight-box').scrollTop = ta.scrollTop;
-        document.getElementById('editor-highlight-box').scrollLeft = ta.scrollLeft;
-        document.querySelector('.line-numbers-content').style.top = `-${ta.scrollTop}px`;
-    }
-
-    function runCInterpreterLocal(code) {
-        let output = "";
-        let cleanCode = code.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '');
-        let mainMatch = cleanCode.match(/int\s+main\s*\([^)]*\)\s*\{([\s\S]*)\}/);
-        if(!mainMatch) return "Erreur de compilation : fonction 'main' introuvable.\n";
-        
-        let mainBody = mainMatch[1];
-        let lines = mainBody.split(';');
-        let memory = {}; 
-        
-        let functions = {};
-        let funcRegex = /(int|void)\s+(\w+)\s*\(([^)]*)\)\s*\{([\s\S]*?)\}/g;
-        let fMatch;
-        while ((fMatch = funcRegex.exec(cleanCode)) !== null) {
-            if(fMatch[2] !== 'main') {
-                functions[fMatch[2]] = { returnType: fMatch[1], args: fMatch[3], body: fMatch[4] };
-            }
+    function filterAlphabet(type) {
+        if(isQuizMode) {
+            isQuizMode = false;
+            document.getElementById('alphabet-container').classList.remove('hidden');
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('btn-quiz').classList.remove('active');
         }
 
-        function evaluateExpression(expr) {
-            expr = expr.trim();
-            if(!expr) return 0;
-            let tokens = expr.split(/\b/);
-            for(let i=0; i<tokens.length; i++) {
-                if(memory[tokens[i].trim()] !== undefined) {
-                    tokens[i] = memory[tokens[i].trim()];
-                }
-            }
-            let joinedExpr = tokens.join('');
-            for(let fName in functions) {
-                if(joinedExpr.includes(fName)) {
-                    let callMatch = joinedExpr.match(new RegExp(fName + '\\s*\\(([^)]*)\\)'));
-                    if(callMatch) {
-                        let paramVals = callMatch[1].split(',').map(p => {
-                            let pTrim = p.trim();
-                            return memory[pTrim] !== undefined ? memory[pTrim] : (parseInt(pTrim) || 0);
-                        });
-                        let fBody = functions[fName].body;
-                        let fArgs = functions[fName].args.split(',').map(a => a.trim().split(/\s+/).pop());
-                        let localContext = {};
-                        fArgs.forEach((argName, idx) => {
-                            localContext[argName] = paramVals[idx] || 0;
-                        });
-                        let retMatch = fBody.match(/return\s+([^;]+);/);
-                        if(retMatch) {
-                            let retExpr = retMatch[1];
-                            let fTokens = retExpr.split(/\b/);
-                            for(let k=0; k<fTokens.length; k++) {
-                                if(localContext[fTokens[k].trim()] !== undefined) {
-                                    fTokens[k] = localContext[fTokens[k].trim()];
-                                }
-                            }
-                            try {
-                                let evaluatedRet = eval(fTokens.join(''));
-                                joinedExpr = joinedExpr.replace(callMatch[0], evaluatedRet);
-                            } catch(e) { joinedExpr = joinedExpr.replace(callMatch[0], '0'); }
-                        }
-                    }
-                }
-            }
-            if(joinedExpr.includes('?')) {
-                try { return eval(joinedExpr); } catch(e){ return 0; }
-            }
-            try { return eval(joinedExpr); } catch(e) { return 0; }
-        }
-
-        for(let i=0; i<lines.length; i++) {
-            let line = lines[i].trim();
-            if(!line || line.startsWith('return')) continue;
-
-            if(line.startsWith('int ') || line.startsWith('float ') || line.startsWith('char ')) {
-                let varsPart = line.replace(/^(int|float|char)\s+/, '');
-                if(varsPart.includes('"')) {
-                    let parts = varsPart.split('=');
-                    let varName = parts[0].split('[')[0].trim();
-                    let strVal = parts[1].replace(/"/g, '').trim();
-                    memory[varName] = strVal;
-                    continue;
-                }
-                if(line.includes('{')) {
-                    let structMatches = line.match(/(\w+)\s*=\s*\{([^}]+)\}/);
-                    if(structMatches) {
-                        memory[structMatches[1] + ".id"] = structMatches[2].split(',')[0].trim();
-                        memory[structMatches[1] + ".code"] = structMatches[2].split(',')[1].trim();
-                    }
-                    continue;
-                }
-                let individualVars = varsPart.split(',');
-                individualVars.forEach(v => {
-                    let vTrim = v.trim();
-                    if(vTrim.includes('=')) {
-                        let p = vTrim.split('=');
-                        memory[p[0].trim()] = evaluateExpression(p[1]);
-                    } else {
-                        if(vTrim.includes('[')) {
-                            let tabName = vTrim.split('[')[0].trim();
-                            memory[tabName] = [];
-                        } else {
-                            memory[vTrim] = 0;
-                        }
-                    }
-                });
-                continue;
-            }
-
-            if(line.startsWith('struct ')) {
-                let structMatches = line.match(/Bureau\s+(\w+)\s*=\s*\{([^}]+)\}/);
-                if(structMatches) {
-                    memory[structMatches[1] + ".id"] = structMatches[2].split(',')[0].trim();
-                    memory[structMatches[1] + ".code"] = structMatches[2].split(',')[1].trim();
-                }
-                continue;
-            }
-
-            if(line.startsWith('printf')) {
-                let printMatch = line.match(/printf\s*\(\s*\"([\s\S]*?)\"\s*(?:\s*,\s*([\s\S]*))?\)/);
-                if(printMatch) {
-                    let formatStr = printMatch[1];
-                    let argsStr = printMatch[2];
-                    if(argsStr) {
-                        argsStr = argsStr.replace(/&/g, '');
-                        let argsList = argsStr.split(',').map(a => a.trim());
-                        argsList.forEach(arg => {
-                            let valToPrint = (memory[arg] !== undefined) ? memory[arg] : evaluateExpression(arg);
-                            formatStr = formatStr.replace(/%d|%f|%c|%s/, valToPrint);
-                        });
-                    }
-                    output += formatStr.replace(/\\n/g, '\n');
-                }
-                continue;
-            }
-
-            if(line.startsWith('scanf')) {
-                let scanfMatch = line.match(/scanf\s*\(\s*\"[^\\\"]*\"\s*,\s*&?(\w+)(?:\[(\w+)\])?\s*\)/);
-                if(scanfMatch) {
-                    let varName = scanfMatch[1];
-                    let arrayIdx = scanfMatch[2];
-                    let userVal = prompt(`[STDIN - Saisie utilisateur requise]\nSaisissez une valeur pour : ${varName}${arrayIdx ? '['+memory[arrayIdx]+']' : ''}`);
-                    let numVal = parseInt(userVal) || 0;
-                    if(arrayIdx !== undefined) {
-                        let actualIdx = memory[arrayIdx] !== undefined ? memory[arrayIdx] : parseInt(arrayIdx);
-                        if(!Array.isArray(memory[varName])) memory[varName] = [];
-                        memory[varName][actualIdx] = numVal;
-                    } else {
-                        memory[varName] = numVal;
-                    }
-                }
-                continue;
-            }
-
-            if(line.startsWith('for')) {
-                if(line.includes('i++') || line.includes('i<=10')) {
-                    let limit = line.includes('10') ? 10 : 3;
-                    let start = line.includes('i=1') ? 1 : 0;
-                    let innerCode = "";
-                    if(line.includes('{')) {
-                        let blockMatch = mainBody.match(/for\s*[^}]+([^}]+)\}/);
-                        if(blockMatch) innerCode = blockMatch[1];
-                    }
-                    if(innerCode) {
-                        let innerLines = innerCode.split(';');
-                        for(let loopI = start; loopI < (limit === 10 ? 11 : limit); loopI++) {
-                            memory['i'] = loopI;
-                            innerLines.forEach(il => {
-                                let ilTrim = il.trim();
-                                if(ilTrim.startsWith('printf')) {
-                                    let pMatch = ilTrim.match(/printf\s*\(\s*\"([\s\S]*?)\"\s*,\s*([\s\S]*?)\)/);
-                                    if(pMatch) {
-                                        let fStr = pMatch[1];
-                                        let argument = pMatch[2].trim();
-                                        if(argument.includes('[i]')) {
-                                            let tName = argument.split('[')[0];
-                                            let val = memory[tName] ? (memory[tName][loopI] || 0) : 0;
-                                            fStr = fStr.replace(/%d|%f|%c/, val);
-                                        } else {
-                                            let val = memory[argument] !== undefined ? memory[argument] : loopI;
-                                            fStr = fStr.replace(/%d|%f|%c/, val);
-                                        }
-                                        output += fStr.replace(/\\n/g, '\n');
-                                    }
-                                } else if(ilTrim.includes('+=')) {
-                                    let p = ilTrim.split('+=');
-                                    let targetV = p[0].trim();
-                                    let exprV = p[1].trim();
-                                    if(exprV.includes('[i]')) {
-                                        let tName = exprV.split('[')[0];
-                                        let userIn = prompt(`Entrez la valeur pour ${tName}[${loopI + 1}] :`);
-                                        let parsedIn = parseInt(userIn) || 0;
-                                        if(!memory[tName]) memory[tName] = [];
-                                        memory[tName][loopI] = parsedIn;
-                                        memory[targetV] = (memory[targetV] || 0) + parsedIn;
-                                    }
-                                }
-                            });
-                        }
-                        break;
-                    }
-                }
-            }
-
-            if(line.startsWith('if')) {
-                let condMatch = line.match(/if\s*\(([^)]+)\)/);
-                if(condMatch) {
-                    let cond = condMatch[1];
-                    let pass = false;
-                    let cTokens = cond.split(/\b/);
-                    for(let k=0; k<cTokens.length; k++) {
-                        if(memory[cTokens[k].trim()] !== undefined) {
-                            cTokens[k] = memory[cTokens[k].trim()];
-                        }
-                    }
-                    try { pass = eval(cTokens.join('')); } catch(e) { pass = false; }
-                    let nextBlock = lines.slice(i).join(';');
-                    if(pass) {
-                        let ifTrueMatch = nextBlock.match(/if\s*[^}]+?\{([\s\S]*?)\}/);
-                        if(ifTrueMatch) {
-                            let trueLines = ifTrueMatch[1].split(';');
-                            trueLines.forEach(tl => {
-                                if(tl.trim().startsWith('printf')) {
-                                    let pMatch = tl.trim().match(/printf\s*\(\s*\"([\s\S]*?)\"\s*,\s*([\s\S]*?)\)/);
-                                    if(pMatch) output += pMatch[1].replace(/%d/, memory[pMatch[2].trim()]).replace(/\\n/g, '\n');
-                                } else if(tl.trim().startsWith('quot')) {
-                                    memory['quot'] = evaluateExpression(tl.trim().split('=')[1]);
-                                }
-                            });
-                        }
-                    } else if(nextBlock.includes('else')) {
-                        let elseMatch = nextBlock.match(/else\s*\{([\s\S]*?)\}/);
-                        if(elseMatch) {
-                            let elseLines = elseMatch[1].split(';');
-                            elseLines.forEach(el => {
-                                if(el.trim().startsWith('printf')) {
-                                    let pMatch = el.trim().match(/printf\s*\(\s*\"([\s\S]*?)\"\s*/);
-                                    if(pMatch) output += pMatch[1].replace(/\\n/g, '\n');
-                                }
-                            });
-                        }
-                    }
-                    break; 
-                }
-            }
-
-            if(line.includes('=')) {
-                let parts = line.split('=');
-                let leftVar = parts[0].trim();
-                let rightExpr = parts[1].trim();
-                if(leftVar.startsWith('*')) leftVar = leftVar.replace('*', '');
-                rightExpr = rightExpr.replace(/\*/g, '');
-                memory[leftVar] = evaluateExpression(rightExpr);
-            }
-        }
-        return output;
+        document.querySelectorAll('#view-alphabet .btn-filter').forEach(b => b.classList.remove('active'));
+        if(type === 'all') document.getElementById('btn-all').classList.add('active');
+        if(type === 'voyelle') document.getElementById('btn-vow').classList.add('active');
+        if(type === 'consonne') document.getElementById('btn-con').classList.add('active');
+        renderAlphabet(type);
     }
 
-    function setCbViewMode(mode) {
-        activeCbMode = mode;
-        document.getElementById('cb-mode-edit').classList.toggle('active', mode === 'edit');
-        document.getElementById('cb-mode-build').classList.toggle('active', mode === 'build');
-        document.getElementById('cb-mode-save').classList.toggle('active', mode === 'save');
+    function renderGrammarAlphabet(accent) {
+        const container = document.getElementById('grammar-alphabet-container');
+        if (!container) return;
+        const rule = accentRules[accent];
 
-        const content = document.getElementById('content-scroller');
-        content.classList.toggle('editor-active-mode', mode === 'build');
+        container.innerHTML = nkoAlphabet.map((item, idx) => {
+            let latinModifie = item.latin;
+            let premiereVoyelle = (item.type === 'voyelle') ? item.latin[0].toLowerCase() : "a";
+            let voyelleAccentuee = premiereVoyelle + rule.marker;
+            if (rule.long) voyelleAccentuee += premiereVoyelle;
+            latinModifie = (item.type === 'voyelle') ? voyelleAccentuee.toUpperCase() : item.latin.replace('a', voyelleAccentuee);
 
-        document.getElementById('ide-box-panel').classList.toggle('hidden', mode === 'save' || mode === 'build');
-        document.getElementById('console-box-panel').classList.toggle('hidden', mode !== 'build');
-        document.getElementById('saved-scripts-panel').classList.toggle('hidden', mode !== 'save');
-        
-        if(mode === 'build') {
-            const terminal = document.getElementById('local-terminal');
-            const codeSaisi = document.getElementById('c-editor').value;
-            terminal.innerHTML = "Compiling file source...\nGCC version 13.2.0 (Ubuntu) loaded.\nLinking memory blocks...\n\n";
-            setTimeout(() => {
-                let resultConsole = runCInterpreterLocal(codeSaisi);
-                terminal.innerHTML += "--- [ OUTPUT TERMINAL EXECUTION ] ---\n";
-                terminal.innerHTML += resultConsole ? resultConsole : "(Le programme s'est terminé sans rien afficher)\n";
-                terminal.innerHTML += "\n--------------------------------\nProcess returned 0 (0x0) | Engine status: OK\nExecution terminee avec succes !\n";
-            }, 300);
-        }
+            return `
+                <div class="mini-card">
+                    <span class="nko-letter" style="color: ${getRainbowColor(idx)};">${item.letter}${accent}</span>
+                    <span class="latin-pron">${latinModifie}</span>
+                </div>
+            `;
+        }).join('');
     }
 
-    function clearTerminalDisplay() { document.getElementById('local-terminal').innerHTML = 'Terminal cleared. Engine standard ready.\n'; }
+    /* FONCTIONS DE FORMATAGE STYLE MS WORD */
+    function formatDoc(command) {
+        document.execCommand(command, false, null);
+        document.getElementById('nko-rainbow-editor').focus();
+    }
 
-    function getSavedScripts() { const data = localStorage.getItem('univ_c_scripts'); return data ? JSON.parse(data) : []; }
+    /* NOUVEAU : Changement dynamique de la couleur du texte sélectionné */
+    function changeTextColor(colorHex) {
+        document.execCommand('foreColor', false, colorHex);
+        document.getElementById('nko-rainbow-editor').focus();
+    }
+
+    function getSavedNotes() { return JSON.parse(localStorage.getItem('nko_notes')) || []; }
+
     function saveEditorText() {
-        const code = document.getElementById('c-editor').value;
-        if(!code.trim()) { alert("L'éditeur est vide."); return; }
-        const list = getSavedScripts();
-        const dateStr = new Date().toLocaleString('fr-FR');
-        list.push({ date: dateStr, code: code });
-        localStorage.setItem('univ_c_scripts', JSON.stringify(list));
-        alert("Fichier sauvegardé localement !");
-        loadSavedScripts();
-        renderSavedScriptsInDico();
+        const editor = document.getElementById('nko-rainbow-editor');
+        const textValue = editor.innerText.trim();
+        const htmlValue = editor.innerHTML;
+        
+        if (!textValue) { alert("Écrivez d'abord un texte."); return; }
+
+        const notes = getSavedNotes();
+        const now = new Date();
+        const timestamp = `${now.getDate()}/${now.getMonth()+1}/${now.getFullYear()} ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+        notes.unshift({ text: textValue, html: htmlValue, date: timestamp });
+        localStorage.setItem('nko_notes', JSON.stringify(notes));
+        
+        editor.innerHTML = ""; 
+        renderSavedNotes();
+        alert("Enregistré avec succès !");
     }
 
-    function loadSavedScripts() {
-        const container = document.getElementById('editor-local-saved-container');
-        const list = getSavedScripts();
-        if(list.length === 0) { container.innerHTML = '<p style="color:#64748b;font-size:0.8rem;">Aucun fichier sauvegardé.</p>'; return; }
-        container.innerHTML = list.map((item, i) => `
+    function renderSavedNotes() {
+        const container = document.getElementById('saved-notes-container');
+        if (!container) return;
+        const notes = getSavedNotes();
+
+        if (notes.length === 0) {
+            container.innerHTML = `<div style="text-align:center; color:#64748b; font-size:0.9rem; margin-top:15px;">Aucun fichier enregistré</div>`;
+            return;
+        }
+
+        container.innerHTML = notes.map((note, index) => `
             <div class="note-paper">
-                <small style="color:#2563eb;font-weight:bold;">Sauvegarde du ${item.date}</small>
-                <div style="font-size:0.7rem;color:#64748b;margin:5px 0;max-height:50px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.code}</div>
-                <div style="display:flex;gap:5px;">
-                    <button class="btn-note-opt btn-load" onclick="loadScriptIndex(${i})">Charger</button>
-                    <button class="btn-note-opt btn-trash" onclick="deleteScriptIndex(${i})">Effacer</button>
+                <div class="note-date">${note.date}</div>
+                <div class="note-text" style="direction: rtl;">${note.html}</div>
+                <div class="note-actions">
+                    <button class="btn-note-opt btn-load" onclick="restoreNote(${index})">ߟߊߞߎߣߎ߲</button>
+                    <button class="btn-note-opt btn-trash" onclick="deleteNote(${index})">ߟߊ߬ߓߋ߬</button>
                 </div>
             </div>
         `).join('');
     }
 
-    function loadScriptIndex(i) {
-        const list = getSavedScripts();
-        document.getElementById('c-editor').value = list[i].code;
-        setCbViewMode('edit');
-        updateIdeView();
+    function restoreNote(index) {
+        const notes = getSavedNotes();
+        document.getElementById('nko-rainbow-editor').innerHTML = notes[index].html;
+        alert("Texte chargé dans l'éditeur !");
     }
 
-    function deleteScriptIndex(i) {
-        if(confirm("Supprimer ce script ?")) {
-            const list = getSavedScripts();
-            list.splice(i, 1);
-            localStorage.setItem('univ_c_scripts', JSON.stringify(list));
-            loadSavedScripts();
-            renderSavedScriptsInDico();
+    function deleteNote(index) {
+        if(confirm("Supprimer définitivement ?")) {
+            const notes = getSavedNotes();
+            notes.splice(index, 1);
+            localStorage.setItem('nko_notes', JSON.stringify(notes));
+            renderSavedNotes();
         }
     }
 
-    function toggleDicoTab(tab) {
-        document.getElementById('btn-dico-words').classList.toggle('active', tab === 'dict');
-        document.getElementById('btn-dico-notes').classList.toggle('active', tab === 'zana');
-        renderSavedScriptsInDico();
+    function selectAccent(button, accent, infoText) {
+        button.parentElement.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+        button.classList.add('active');
+        document.getElementById('accent-info').innerText = infoText;
+        renderGrammarAlphabet(accent);
     }
 
-    function renderSavedScriptsInDico() {
-        const container = document.querySelector('.dico-container'), scripts = getSavedScripts();
-        if(scripts.length === 0) { container.innerHTML = `<p style="text-align:center;color:#64748b;padding:20px;">Aucun script.</p>`; return; }
-        container.innerHTML = scripts.map(s => `<div class="word-item"><small style="color:#64748b;font-weight:bold;">${s.date}</small><div class="code-block" style="font-size:0.75rem;">${s.code.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div></div>`).join('');
-    }
+    function switchView(viewName) {
+        document.getElementById('view-alphabet').classList.toggle('hidden', viewName !== 'alphabet');
+        document.getElementById('view-grammar').classList.toggle('hidden', viewName !== 'grammar');
+        document.getElementById('view-editor').classList.toggle('hidden', viewName !== 'editor');
+        document.getElementById('view-add').classList.toggle('hidden', viewName !== 'add');
+        document.getElementById('view-dico').classList.toggle('hidden', viewName !== 'dico');
 
-    function switchView(view) {
-        const views = ['win', 'cmd', 'alphabet', 'guide', 'editor', 'dico'];
-        views.forEach(v => document.getElementById('view-' + v).classList.toggle('hidden', v !== view));
         document.querySelectorAll('.taskbar .task-item').forEach(item => item.classList.remove('active'));
-        if(document.getElementById('tab-' + view)) document.getElementById('tab-' + view).classList.add('active');
+        const currentTab = document.getElementById('tab-' + viewName);
+        if(currentTab) currentTab.classList.add('active');
 
-        const headers = { win: "Raccourcis OS Windows", cmd: "Invite CMD & Simulateur", alphabet: "Bases du Langage C", guide: "Exemples de Codes", editor: "Code::Blocks Workspace", dico: "Mémos Enregistrés" };
-        document.getElementById('main-title').innerText = headers[view];
+        const headers = { alphabet: "ߊ߬ߟߎ߬ߝߊ߬ߓߋ", grammar: "ߞߊ߲ߡߊߛߙߋ", editor: "ߛߓߍߟߊ", add: "ߡߟߊߡߊߦߟߍ", dico: "ߘߎ߲ߓߎ" };
+        document.getElementById('main-title').innerText = headers[viewName];
 
-        if(view === 'editor') {
-            updateIdeView(); 
-            setCbViewMode(activeCbMode);
+        if(viewName === 'dico') {
+            // Par défaut on ouvre l'affichage classique des mots du dictionnaire
+            toggleDicoTab(currentDicoView);
         }
+        if(viewName === 'add') renderAdminDelete();
+        if(viewName === 'editor') renderSavedNotes();
+    }
+
+    function getDico() { return JSON.parse(localStorage.getItem('nko_dict')) || []; }
+
+    // Nouvelle fonction pour basculer entre le Dico (mots) et Zana (écrits de l'éditeur)
+    function toggleDicoTab(tabType) {
+        currentDicoView = tabType;
+        document.getElementById('btn-dico-words').classList.toggle('active', tabType === 'dict');
+        document.getElementById('btn-dico-notes').classList.toggle('active', tabType === 'zana');
+        
+        if(tabType === 'dict') {
+            renderDico();
+        } else {
+            renderDicoNotes();
+        }
+    }
+
+    function saveWord() {
+        const nkoInput = document.getElementById('w-nko');
+        const sensInput = document.getElementById('w-sens');
+        const imgInput = document.getElementById('w-img');
+        if (!nkoInput.value.trim() || !sensInput.value.trim()) return alert("Remplissez tous les champs.");
+
+        const executeStorageSave = (finalBase64 = "") => {
+            try {
+                const currentDico = getDico();
+                currentDico.unshift({ nko: nkoInput.value.trim(), sens: sensInput.value.trim(), img: finalBase64 });
+                localStorage.setItem('nko_dict', JSON.stringify(currentDico));
+                nkoInput.value = ""; sensInput.value = ""; imgInput.value = "";
+                renderAdminDelete();
+                alert("Ajouté avec succès !");
+            } catch (e) { alert("Erreur de stockage."); }
+        };
+
+        if (imgInput.files && imgInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgObj = new Image(); imgObj.src = e.target.result;
+                imgObj.onload = function() {
+                    const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
+                    canvas.width = 300; canvas.height = imgObj.height * (300 / imgObj.width);
+                    ctx.drawImage(imgObj, 0, 0, canvas.width, canvas.height);
+                    executeStorageSave(canvas.toDataURL('image/jpeg', 0.7));
+                };
+            };
+            reader.readAsDataURL(imgInput.files[0]);
+        } else { executeStorageSave(""); }
+    }
+
+    function renderDico() {
+        const container = document.querySelector('.dico-container'); if (!container) return;
+        const dicoData = getDico();
+        
+        if (dicoData.length === 0) {
+            container.innerHTML = `<div style="text-align:center; color:#64748b; font-size:0.9rem; margin-top:15px;">Aucun mot trouvé</div>`;
+            return;
+        }
+
+        container.innerHTML = dicoData.map(item => `
+            <div class="word-item">
+                <div class="word-row">
+                    <div class="word-col"><span class="word-nko">${item.nko}</span></div>
+                    <div class="word-col" style="border-right: 2px solid #f1f5f9;"><span class="word-sens">${item.sens}</span></div>
+                </div>
+                ${item.img ? `<div class="word-img-container"><img src="${item.img}" class="word-thumb" alt="image" /></div>` : ''}
+            </div>
+        `).join('');
+    }
+
+    // Nouvelle fonction pour afficher les notes de l'éditeur au format dictionnaire
+    function renderDicoNotes() {
+        const container = document.querySelector('.dico-container'); if (!container) return;
+        const notes = getSavedNotes();
+
+        if (notes.length === 0) {
+            container.innerHTML = `<div style="text-align:center; color:#64748b; font-size:0.9rem; margin-top:15px;">Aucun écrit trouvé (ߛߊ߲ߊ)</div>`;
+            return;
+        }
+
+        container.innerHTML = notes.map(note => `
+            <div class="word-item">
+                <div class="note-date">${note.date}</div>
+                <div style="direction: rtl; font-family: 'Noto Sans NKo', sans-serif; font-size: 1.4rem; padding: 5px 0;">
+                    ${note.html}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderAdminDelete() {
+        const container = document.getElementById('admin-delete-container'); if (!container) return;
+        container.innerHTML = getDico().map((item, index) => `
+            <div class="word-item">
+                <div class="word-row">
+                    <div class="word-col"><span class="word-nko">${item.nko}</span></div>
+                    <button class="btn-delete" onclick="deleteWord(${index})">ߟߊ߬ߓߋ߬</button>
+                </div>
+                ${item.img ? `<div class="word-img-container"><img src="${item.img}" class="word-thumb" style="height:60px;" alt="image" /></div>` : ''}
+            </div>
+        `).join('');
+    }
+
+    function deleteWord(index) {
+        const currentDico = getDico(); currentDico.splice(index, 1);
+        localStorage.setItem('nko_dict', JSON.stringify(currentDico));
+        renderAdminDelete();
     }
 </script>
 </body>
